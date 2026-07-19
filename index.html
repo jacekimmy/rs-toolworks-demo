@@ -202,7 +202,7 @@ main{padding-left:var(--rail-w)}
 .hero-state{display:flex;flex-direction:column;gap:34px}
 .hero h1{
   font-family:var(--mono);font-weight:700;font-size:clamp(40px,4.8vw,66px);
-  line-height:1.04;letter-spacing:-.015em;text-transform:uppercase;
+  line-height:1.04;letter-spacing:-.015em;word-spacing:-.34ch;text-transform:uppercase;
 }
 .hero h1 .row{display:block}
 .hero h1 .etch{color:var(--orange)}
@@ -252,7 +252,7 @@ main{padding-left:var(--rail-w)}
 .practice-inner{max-width:1280px;margin:0 auto;padding:104px 40px 116px}
 .claim{
   font-family:var(--mono);font-weight:700;font-size:clamp(24px,2.6vw,36px);
-  line-height:1.18;letter-spacing:-.01em;text-transform:uppercase;
+  line-height:1.18;letter-spacing:-.01em;word-spacing:-.3ch;text-transform:uppercase;
 }
 .claim .etch{color:var(--orange)}
 .pr-ruler-wrap{margin:62px 0 0}
@@ -388,8 +388,8 @@ main{padding-left:var(--rail-w)}
 .cta:hover .go{transform:translateX(4px)}
 
 /* ================= ST 07 : closure ================= */
-footer{margin-top:140px;border-top:1.5px solid var(--line)}
-.foot{max-width:1280px;margin:0 auto;padding:64px 40px 56px;display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap}
+footer{margin-top:140px;border-top:1.5px solid var(--line);padding-left:var(--rail-w)}
+.foot{max-width:1280px;margin:0 auto;padding:64px 40px 56px;position:relative;z-index:41;display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap}
 .foot ​.hero-line{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--ink-soft);text-transform:uppercase}
 .spec-strip{max-width:none}
 .foot-left{display:flex;flex-direction:column;gap:22px}
@@ -638,12 +638,12 @@ html.hard .room{box-shadow:0 0 0 1px #000 !important}
       <h1 class="rv">
         <span class="row">We make</span>
         <span class="row ind">the tools that</span>
-        <span class="row">make <span class="etch">the parts.</span></span>
+        <span class="row">make the parts.</span>
       </h1>
       <div class="lbl drop-hidden" data-drop data-drop-delay="420" style="max-width:560px">
         <span class="lk">Shop <span class="toy-dot toy-hero" data-toy aria-hidden="true" title="flick me"></span></span>
         <span class="rule"></span>
-        <span class="lv">Two people · one shop · est. 2011</span>
+        <span class="lv">Two people · one shop · Kingston, New York, USA</span>
       </div>
       <div class="lbl drop-hidden" data-drop data-drop-delay="520" style="max-width:560px;margin-top:18px">
         <span class="lk">Materials</span>
@@ -651,7 +651,7 @@ html.hard .room{box-shadow:0 0 0 1px #000 !important}
         <span class="lv">Steel · carbide · diamond</span>
       </div>
       <div class="lbl drop-hidden" data-drop data-drop-delay="620" style="max-width:560px;margin-top:18px" aria-label="Time on this page since you arrived">
-        <span class="lk">Time on this page</span>
+        <span class="lk">We time everything · your visit so far</span>
         <span class="rule"></span>
         <span class="lv">D <b data-u="d">0</b> · H <b data-u="h">00</b> · M <b data-u="m">00</b> · S <b class="val-orange" data-u="s">00</b></span>
       </div>
@@ -667,7 +667,7 @@ html.hard .room{box-shadow:0 0 0 1px #000 !important}
   <!-- ST 01 : practice -->
   <section class="station practice" data-station="ST·01 PRACTICE">
     <div class="practice-inner">
-      <p class="claim rv" style="margin-top:0;max-width:30ch">Draw, turn, mill, grind, <span class="etch">measure,</span> sharpen.</p>
+      <p class="claim rv" style="margin-top:0;max-width:30ch">Draw, turn, mill, grind, measure, sharpen.</p>
 
       <div class="pr-plates">
         <div class="plate rv">
@@ -680,7 +680,7 @@ html.hard .room{box-shadow:0 0 0 1px #000 !important}
         </div>
       </div>
       <div class="pr-foot rv">
-        <p class="pr-copy"><b>The same pair of hands</b> draws, machines, and inspects every tool before it ships.</p>
+        <p class="pr-copy">Everything here gets drawn, machined, and inspected by the two of us, usually with an argument in the middle about whether it needs another thou taken off. The old lathe is slower than the CNC and we keep it anyway, because some jobs want a handwheel and a bit of listening.</p>
 
       </div>
     </div>
@@ -707,7 +707,7 @@ html.hard .room{box-shadow:0 0 0 1px #000 !important}
 
   <!-- ST 03 : time since launch -->
   <section class="station tsl" data-station="ST·03 TIME SINCE LAUNCH">
-    <p class="claim rv">Grit where it matters, <span class="etch">nowhere else.</span></p>
+    <p class="claim rv">Grit where it matters, nowhere else.</p>
     <div class="tsl-object rv" style="transition-delay:120ms">
       <img src="assets/burrs.webp" alt="Close view of three diamond burrs, grit ends first">
     </div>
@@ -728,7 +728,7 @@ html.hard .room{box-shadow:0 0 0 1px #000 !important}
     <div class="pen-inner">
       <div class="ph rv"><img src="assets/mill-heads.webp" alt="A family of indexable milling heads on the bench"></div>
       <div class="pen-chip rv" style="transition-delay:140ms">
-        <p class="claim">Heads that outlive <span class="etch">their spindles.</span></p>
+        <p class="claim">Heads that outlive their spindles.</p>
         <p class="fig-cap" style="margin:14px 0 0;text-align:left">Indexable inserts, so a worn edge is a part, not a replacement</p>
         <button class="obj-link" style="background:none;border:0;border-bottom:1.5px solid var(--ink);cursor:pointer" data-open-panel="pen">See the heads <span class="go">→</span></button>
       </div>
@@ -737,7 +737,7 @@ html.hard .room{box-shadow:0 0 0 1px #000 !important}
 
   <!-- ST 05 : watch -->
   <section class="station watch" data-station="ST·05 SOLID STATE WATCH">
-    <p class="claim rv" style="margin-top:0">Sharpened <span class="etch">by hand.</span></p>
+    <p class="claim rv" style="margin-top:0">Sharpened by hand.</p>
     <div class="watch-spec rv" style="transition-delay:120ms">
       <div class="plate">
         <div class="ph"><img src="assets/drills-yellow.webp" alt="Two twist drills against a yellow ground"></div>
@@ -753,7 +753,7 @@ html.hard .room{box-shadow:0 0 0 1px #000 !important}
 
   <!-- ST 06 : custom -->
   <section class="station custom" data-station="ST·06 CUSTOM ORDERS">
-    <p class="claim rv" style="margin-top:0;max-width:32ch">Fifty or more, ground to <span class="etch">your drawing.</span></p>
+    <p class="claim rv" style="margin-top:0;max-width:32ch">Fifty or more, ground to your drawing.</p>
     <div class="custom-plate rv" style="transition-delay:120ms">
       <img src="assets/shop-cnc.webp" alt="The CNC lathe set up for a batch run">
     </div>
@@ -773,13 +773,13 @@ html.hard .room{box-shadow:0 0 0 1px #000 !important}
   <div class="foot">
     <div class="foot-left rv">
       <div class="lbl" style="min-width:340px;margin-top:0" aria-label="Your visit so far">
-        <span class="lk">Your visit, so far</span>
+        <span class="lk">We time everything · your visit came to</span>
         <span class="rule"></span>
         <span class="lv">D <b data-u="d">0</b> · H <b data-u="h">00</b> · M <b data-u="m">00</b> · S <b class="val-orange" data-u="s">00</b></span>
       </div>
       <div>
         <div class="sign">R<span class="amp">&amp;</span>S</div>
-        <div class="where">Two people · one shop · est. 2011 · a design study, not a real shop</div>
+        <div class="where">Kingston, New York, USA · est. 2011 · a design study, not a real shop</div>
       </div>
     </div>
     <div class="foot-links rv" style="transition-delay:120ms">
