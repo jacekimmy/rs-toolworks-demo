@@ -1,0 +1,1128 @@
+<!doctype html>
+<html lang="en" class="fonts-pending">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Round &amp; Square Tool Works</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Ccircle cx=%278%27 cy=%278%27 r=%276.5%27 fill=%27%23e4570f%27 stroke=%27%231a170f%27 stroke-width=%271.5%27/%3E%3C/svg%3E">
+<meta name="description" content="Round & Square Tool Works. Two people machining cutting tools. A design study.">
+<style>
+/* fonts */
+@font-face{font-family:'Space Mono';src:url('assets/space-mono-regular.woff2') format('woff2');font-weight:400;font-display:block}
+@font-face{font-family:'Space Mono';src:url('assets/space-mono-bold.woff2') format('woff2');font-weight:700;font-display:block}
+@font-face{font-family:'Commissioner';src:url('assets/commissioner-latin.woff2') format('woff2');font-weight:100 900;font-display:block}
+
+/* tokens */
+:root{
+  --paper:#f5f1e8;
+  --paper-deep:#ebe5d6;
+  --ink:#1a170f;
+  --ink-soft:#5b5340;
+  --ink-faint:#948a72;
+  --orange:#FF8800;
+  --orange-soft:rgba(228,87,15,.08);
+  --line:rgba(26,23,15,.22);
+  --line-soft:rgba(26,23,15,.09);
+  --ease:linear(0 0.0%, 0.032 2.1%, 0.0819 6.2%, 0.1281 10.4%, 0.1779 14.6%, 0.2242 18.8%, 0.267 22.9%, 0.3167 27.1%, 0.3559 31.2%, 0.4021 35.4%, 0.4448 39.6%, 0.4875 43.8%, 0.5302 47.9%, 0.5659 52.1%, 0.6049 56.2%, 0.6513 60.4%, 0.6833 64.6%, 0.7188 68.8%, 0.7615 72.9%, 0.7865 77.1%, 0.8434 81.2%, 0.9288 85.4%, 0.9964 89.6%, 1 93.8%, 1 97.9%, 1 100.0%);
+  --fast:130ms; --med:420ms; --slow:720ms;
+  --mono:'Space Mono',monospace;
+  --body:'Commissioner',sans-serif;
+  --rail-w:88px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html.fonts-pending body{visibility:hidden}
+html,body{overflow-x:clip}
+
+body{--sheet:linear-gradient(180deg,rgba(255,252,244,.55),transparent 380px)}
+html{background:var(--paper)}
+main{background:var(--sheet)}
+body::after{
+  content:'';position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.075;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size:240px 240px;mix-blend-mode:multiply;
+}
+main,footer,.rail,.toolchip,.shopchip,.menu-chip{position:relative;z-index:2}
+
+.rail{z-index:40}.toolchip{z-index:60}.shopchip{z-index:60}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-weight:390;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit}
+::selection{background:var(--orange);color:var(--paper)}
+.skip{position:fixed;top:-48px;left:16px;z-index:99;background:var(--ink);color:var(--paper);padding:10px 16px;font-family:var(--mono);font-size:12px;text-decoration:none}
+.skip:focus{top:12px}
+:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+
+/* spec-sheet label lines */
+.lbl{margin-top:26px}
+.lbl .lk{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-soft);display:block;padding-bottom:5px}
+.lbl .rule{display:block;height:1px;background:rgba(26,23,15,.55)}
+.lbl .lv{font-family:var(--mono);font-size:13px;letter-spacing:.02em;color:var(--ink);display:block;padding-top:6px}
+.lbl .lv b{font-weight:400;color:var(--ink)}
+.lbl .lv .bk{color:var(--ink-faint)}
+.lbl.right{text-align:right}
+.lbl .lv .val-orange{color:var(--orange)}
+
+/* engraved label voice */
+.tag{font-family:var(--mono);font-size:11px;letter-spacing:.09em;color:var(--ink-soft);text-transform:uppercase}
+.tag .idx{color:var(--ink-faint)}
+
+/* ================= THE RAIL : the page is one ruler ================= */
+.rail{
+  position:fixed;top:0;bottom:0;left:0;width:var(--rail-w);z-index:40;
+  border-right:1.5px solid var(--line);
+  background:
+    repeating-linear-gradient(180deg,transparent 0 9px,var(--line-soft) 9px 10px) right 14px top/8px 100% no-repeat,
+    repeating-linear-gradient(180deg,transparent 0 44px,var(--line) 44px 45.5px) right 8px top/16px 100% no-repeat;
+  pointer-events:none;
+}
+.rail .rail-code{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(180deg);
+  writing-mode:vertical-rl;font-family:var(--mono);font-size:10px;letter-spacing:.32em;
+  color:var(--ink-faint);white-space:nowrap;
+}
+.rail .carriage{
+  position:absolute;right:-7px;top:0;width:13px;height:26px;z-index:2;
+  background:var(--orange);border:1.5px solid var(--ink);border-radius:2px;
+  box-shadow:0 2px 0 rgba(26,23,15,.25);
+  will-change:transform;
+}
+.rail .carriage::after{content:'';position:absolute;left:2px;right:2px;top:50%;height:1.5px;background:var(--paper)}
+.rail .st-mark{
+  position:absolute;right:10px;transform:translateY(-50%) rotate(180deg);
+  writing-mode:vertical-rl;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--ink-faint);
+  transition:color 400ms var(--ease);
+  white-space:nowrap;
+}
+.rail .st-mark.lit{color:var(--orange)}
+
+/* ================= NAV : a machined tool chip, not a bar ================= */
+.toolchip{
+  position:fixed;top:18px;left:calc(var(--rail-w) + 24px);z-index:60;
+  display:flex;align-items:stretch;
+  background:var(--paper);border:1.5px solid var(--ink);border-radius:2px;
+  box-shadow:0 3px 0 rgba(26,23,15,.18);
+}
+.toolchip::after{
+  content:'';position:absolute;left:6px;right:6px;bottom:-1px;height:5px;
+  background:repeating-linear-gradient(90deg,var(--ink) 0 1.5px,transparent 1.5px 9px) 0 100%/100% 4px no-repeat;
+  opacity:.5;pointer-events:none;
+}
+.wordmark{
+  font-family:var(--mono);font-weight:700;font-size:16px;letter-spacing:.01em;
+  text-decoration:none;display:flex;align-items:center;padding:0 16px;
+  border-right:1.5px solid var(--ink);
+}
+.wordmark .amp{color:var(--orange);display:inline-block;transition:transform var(--med) var(--ease)}
+.wordmark:hover .amp{transform:rotate(180deg)}
+.nav-item{position:relative;display:flex}
+.nav-btn{
+  appearance:none;background:none;border:0;cursor:pointer;
+  font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);
+  padding:13px 15px;display:flex;align-items:center;gap:8px;
+  border-right:1.5px solid var(--line);
+  transition:background var(--fast) var(--ease);
+}
+.nav-item:last-of-type .nav-btn{border-right:0}
+.nav-btn .chev{width:8px;height:8px;border-right:1.5px solid var(--ink-soft);border-bottom:1.5px solid var(--ink-soft);
+  transform:rotate(45deg) translate(-1px,-1px);transition:transform 180ms var(--ease),border-color var(--fast)}
+.nav-btn:hover{background:var(--orange-soft)}
+.nav-btn:hover .chev{transform:rotate(45deg) translate(1px,1px);border-color:var(--orange)}
+.nav-item.open .nav-btn{background:var(--orange-soft)}
+.nav-item.open .chev{transform:rotate(-135deg);border-color:var(--orange)}
+
+.shopchip{
+  position:fixed;top:18px;right:24px;z-index:60;
+  font-family:var(--mono);font-size:12.5px;letter-spacing:.05em;text-decoration:none;color:var(--paper);
+  background:var(--ink);border:1.5px solid var(--ink);border-radius:2px;padding:12px 20px;
+  box-shadow:0 3px 0 rgba(26,23,15,.18);
+  transition:background var(--fast) var(--ease),color var(--fast),transform 80ms var(--ease);
+}
+.shopchip:hover{background:var(--orange);border-color:var(--orange)}
+.shopchip:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(26,23,15,.18)}
+
+/* room : bridge kills the hover gap */
+.nav-item::before{content:'';position:absolute;top:100%;left:-20px;right:-20px;height:16px}
+.room{
+  position:absolute;top:calc(100% + 13px);left:-1.5px;width:600px;
+  background:var(--paper);border:1.5px solid var(--ink);border-radius:2px;
+  box-shadow:0 4px 0 rgba(26,23,15,.18),0 30px 60px -20px rgba(26,23,15,.3);
+  display:grid;grid-template-columns:1fr 232px;overflow:hidden;
+  opacity:0;transform:translateY(-6px);pointer-events:none;
+  transition:opacity 190ms var(--ease),transform 250ms var(--ease);
+}
+.nav-item.open .room{opacity:1;transform:none;pointer-events:auto}
+.room.slim{width:440px;grid-template-columns:1fr}
+.room-links{padding:12px 8px 12px 12px;display:flex;flex-direction:column;gap:1px}
+.room-link{
+  display:flex;flex-direction:column;gap:2px;text-decoration:none;padding:12px 14px;border-radius:2px;
+  cursor:pointer;border:0;background:none;text-align:left;font-family:var(--body);
+  transition:background var(--fast) var(--ease);
+}
+.room-link:hover{background:var(--orange-soft)}
+.room-link .rl-name{font-family:var(--mono);font-weight:700;font-size:14px;display:flex;align-items:center;gap:9px}
+.room-link .rl-name .dot{width:5px;height:5px;border-radius:50%;background:var(--line);transition:background var(--fast),transform var(--fast)}
+.room-link:hover .rl-name .dot{background:var(--orange);transform:scale(1.35)}
+.room-link .rl-fact{font-size:13px;color:var(--ink-soft);padding-left:14px}
+.room-card{
+  margin:12px 12px 12px 4px;border:1.5px solid var(--ink);border-radius:2px;background:var(--paper-deep);
+  display:flex;flex-direction:column;overflow:hidden;position:relative;
+}
+.room-card img{width:100%;aspect-ratio:1;object-fit:cover;mix-blend-mode:multiply}
+.room-card .rc-cap{
+  padding:9px 11px;border-top:1.5px solid var(--ink);
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--ink-soft);text-transform:uppercase;
+  display:flex;justify-content:space-between;background:var(--paper);
+}
+.room-card .rc-cap b{color:var(--orange);font-weight:400}
+.room-note{padding:10px 15px;font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;color:var(--ink-faint);
+  border-top:1.5px solid var(--line);grid-column:1/-1;text-transform:uppercase;background:var(--paper)}
+.room-note a{color:var(--ink-soft)}
+.menu-chip{display:none}
+
+/* ================= layout ================= */
+main{padding-left:var(--rail-w)}
+.station{position:relative}
+.st-head{
+  display:flex;align-items:center;gap:14px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+}
+.st-head::before{content:'';width:34px;height:1.5px;background:var(--orange)}
+.st-head .idx{color:var(--ink-faint)}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(22px);transition:opacity var(--slow) var(--ease),transform var(--slow) var(--ease)}
+.rv.in{opacity:1;transform:none}
+
+/* ================= ST 00 : arrival ================= */
+.hero{
+  min-height:100svh;display:grid;grid-template-columns:1.12fr .88fr;gap:40px;
+  max-width:1280px;margin:0 auto;padding:120px 40px 40px;align-items:center;
+}
+.hero-state{display:flex;flex-direction:column;gap:34px}
+.hero h1{
+  font-family:var(--mono);font-weight:700;font-size:clamp(40px,4.8vw,66px);
+  line-height:1.04;letter-spacing:-.015em;text-transform:uppercase;
+}
+.hero h1 .row{display:block}
+.hero h1 .etch{color:var(--orange)}
+.hero h1 .row.ind{padding-left:1.2ch}
+​.hero-line{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--ink-soft);text-transform:uppercase}
+.spec-strip{
+  border:1.5px solid var(--ink);border-radius:2px;background:var(--paper);
+  display:flex;align-items:stretch;flex-wrap:wrap;
+  box-shadow:0 3px 0 rgba(26,23,15,.14);
+  max-width:640px;
+}
+.spec-cell{
+  padding:12px 18px;border-right:1.5px solid var(--line);
+  display:flex;flex-direction:column;gap:3px;justify-content:center;flex:1 1 auto;
+}
+.spec-cell:last-child{border-right:0}
+.spec-cell .k{font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--ink-faint);text-transform:uppercase}
+.spec-cell .v{font-family:var(--body);font-size:14.5px;font-weight:480;color:var(--ink)}
+.clock{display:flex;align-items:stretch}
+.clock-cell{display:flex;flex-direction:column;gap:3px;justify-content:center;padding:12px 14px;border-right:1.5px solid var(--line)}
+.clock-cell:last-child{border-right:0}
+.clock-cell .v{font-family:var(--mono);font-size:16px;font-variant-numeric:tabular-nums;color:var(--ink)}
+.clock-cell.sec .v{color:var(--orange)}
+.clock-cell .k{font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--ink-faint)}
+
+.hero-object{position:relative;align-self:stretch;display:flex;align-items:center}
+.sleeve{
+  width:100%;border:1.5px solid var(--ink);border-radius:2px;background:#e7e2d6;
+  box-shadow:0 3px 0 rgba(26,23,15,.14);overflow:hidden;position:relative;
+}
+.drop-hidden{opacity:0}
+.sleeve::before,.sleeve::after{
+  content:'';position:absolute;top:8px;bottom:8px;width:12px;z-index:2;
+  background:repeating-linear-gradient(180deg,rgba(26,23,15,.4) 0 1.5px,transparent 1.5px 10px);
+}
+.sleeve::before{left:7px}.sleeve::after{right:7px}
+.sleeve img{width:100%;mix-blend-mode:multiply}
+.sleeve .s-cap{
+  display:flex;justify-content:space-between;padding:10px 14px;border-top:1.5px solid var(--ink);
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);
+  background:var(--paper);position:relative;z-index:3;
+}
+.sleeve .s-cap b{font-weight:400;color:var(--orange)}
+
+/* ================= ST 01 : practice ================= */
+.practice{background:var(--paper-deep);border-top:1.5px solid var(--line);border-bottom:1.5px solid var(--line)}
+.practice-inner{max-width:1280px;margin:0 auto;padding:104px 40px 116px}
+.claim{
+  font-family:var(--mono);font-weight:700;font-size:clamp(24px,2.6vw,36px);
+  line-height:1.18;letter-spacing:-.01em;text-transform:uppercase;
+}
+.claim .etch{color:var(--orange)}
+.pr-ruler-wrap{margin:62px 0 0}
+.pr-ruler{
+  position:relative;height:40px;
+  background:
+    repeating-linear-gradient(90deg,rgba(26,23,15,.45) 0 1.5px,transparent 1.5px 10%) 0 100%/100% 15px no-repeat,
+    repeating-linear-gradient(90deg,var(--line-soft) 0 1px,transparent 1px 2%) 0 100%/100% 8px no-repeat,
+    linear-gradient(var(--ink),var(--ink)) 0 100%/100% 1.5px no-repeat;
+}
+.pr-ruler .pr-dot{
+  position:absolute;bottom:-7px;left:0;width:14px;height:14px;border-radius:50%;
+  background:var(--orange);border:1.5px solid var(--ink);
+  transform:translateX(-50%);will-change:left;
+}
+.pr-stations{display:grid;grid-template-columns:repeat(6,1fr);margin-top:20px}
+.pr-st{font-family:var(--mono);font-size:13px;letter-spacing:.04em;color:var(--ink-soft);transition:color 350ms var(--ease)}
+.pr-st .n{display:block;font-size:9.5px;color:var(--ink-faint);margin-bottom:3px;transition:color 350ms var(--ease)}
+.pr-st{color:var(--ink)}
+.pr-st .n{color:var(--orange)}
+.pr-plates{display:grid;grid-template-columns:1.25fr 1fr;gap:20px;margin-top:78px;align-items:stretch}
+.plate{display:flex;flex-direction:column;gap:10px}
+.plate .ph{box-shadow:0 14px 34px -18px rgba(26,23,15,.45)}
+.plate .ph{overflow:hidden;flex:1}
+.plate .ph img{width:100%;height:100%;object-fit:cover}
+.plate .p-cap{
+  display:flex;justify-content:space-between;padding:0 2px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);
+}
+.pr-foot{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-top:26px;flex-wrap:wrap}
+.pr-copy{color:var(--ink-soft);max-width:52ch;font-size:16.5px}
+.pr-copy b{color:var(--ink);font-weight:560}
+.award{
+  border:1.5px solid var(--ink);border-radius:2px;background:var(--paper);
+  padding:12px 18px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;
+  color:var(--ink-soft);line-height:1.7;position:relative;box-shadow:0 3px 0 rgba(26,23,15,.14);
+}
+.award::before{content:'2022';position:absolute;top:-8px;left:12px;background:var(--paper);
+  padding:0 7px;color:var(--orange);font-size:9.5px;letter-spacing:.14em}
+
+/* ================= ST 02 : objects bench ================= */
+.objects{max-width:1280px;margin:0 auto;padding:110px 40px 0}
+.bench-claim{margin-top:20px;max-width:30ch}
+.bench{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:58px;align-items:stretch}
+.bench .b-plate{
+  appearance:none;font-family:var(--body);text-align:left;cursor:pointer;padding:0;
+  border:0;background:none;
+  display:flex;flex-direction:column;gap:10px;
+  opacity:0;
+}
+.bench .b-plate .ph{box-shadow:0 14px 34px -18px rgba(26,23,15,.45)}
+.bench.landed .b-plate{transition:box-shadow var(--med) var(--ease),transform 260ms var(--ease)}
+.bench.landed .b-plate:hover{transform:translateY(-5px)}
+.bench.landed .b-plate:hover .ph{box-shadow:0 22px 44px -18px rgba(26,23,15,.55)}
+.bench.landed .b-plate:active{transform:translateY(-2px)}
+.b-plate .ph{aspect-ratio:1;overflow:hidden}
+.b-plate .ph img{width:100%;height:100%;object-fit:cover;transition:transform var(--slow) var(--ease)}
+.b-plate:hover .ph img{transform:scale(1.035)}
+.b-plate .p-cap{display:flex;justify-content:space-between;align-items:center;padding:0 2px;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--ink-soft)}
+.b-plate .p-cap .go{color:var(--ink-faint);transition:color var(--fast),transform var(--med) var(--ease)}
+.b-plate:hover .p-cap .go{color:var(--orange);transform:translateX(3px)}
+
+/* ================= ST 03 : time since launch ================= */
+.tsl{max-width:1280px;margin:0 auto;padding:130px 40px 0;text-align:center}
+.tsl .claim{max-width:26ch;margin:22px auto 0}
+.tsl-object{max-width:940px;margin:54px auto 0;position:relative}
+.tsl-object img{width:100%;mix-blend-mode:multiply}
+​.fig-cap{font-family:var(--mono);font-size:12px;letter-spacing:.05em;color:var(--ink-soft);text-transform:uppercase;margin:38px auto 0;max-width:70ch}
+.tsl-facts{
+  display:flex;justify-content:center;gap:0;margin:44px auto 0;max-width:860px;
+  border:1.5px solid var(--ink);border-radius:2px;background:var(--paper);
+  box-shadow:0 3px 0 rgba(26,23,15,.14);flex-wrap:wrap;
+}
+.tsl-fact{flex:1 1 200px;padding:16px 20px;border-right:1.5px solid var(--line);display:flex;flex-direction:column;gap:4px}
+.tsl-fact:last-child{border-right:0}
+.tsl-fact .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--ink-faint);text-transform:uppercase}
+.tsl-fact .v{font-size:15px;font-weight:480}
+.obj-link{
+  display:inline-flex;align-items:center;gap:10px;text-decoration:none;margin-top:34px;
+  font-family:var(--mono);font-size:13px;letter-spacing:.03em;color:var(--ink);
+  border-bottom:1.5px solid var(--ink);padding-bottom:4px;
+  transition:color var(--fast) var(--ease),border-color var(--fast) var(--ease);
+}
+.obj-link .go{transition:transform var(--med) var(--ease)}
+.obj-link:hover{color:var(--orange);border-color:var(--orange)}
+.obj-link:hover .go{transform:translateX(4px)}
+
+/* ================= ST 04 : pen band ================= */
+.pen{margin-top:130px;position:relative;border-top:1.5px solid var(--line);border-bottom:1.5px solid var(--line);background:var(--paper-deep)}
+.pen-inner{max-width:1280px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:1fr;position:relative}
+.pen .ph{margin:0 -40px;max-height:560px;overflow:hidden}
+.pen .ph img{width:100%;object-fit:cover;max-height:560px;mix-blend-mode:multiply}
+.pen-chip{
+  position:absolute;left:40px;bottom:44px;max-width:430px;
+  border:1.5px solid var(--ink);border-radius:2px;background:var(--paper);
+  box-shadow:0 4px 0 rgba(26,23,15,.2);padding:22px 24px;
+}
+.pen-chip .claim{font-size:clamp(19px,1.8vw,24px);margin-top:12px}
+.pen-chip .obj-link{margin-top:18px}
+
+/* ================= ST 05 : watch, quiet small ================= */
+.watch{max-width:1280px;margin:0 auto;padding:130px 40px 0;display:flex;flex-direction:column;align-items:center;text-align:center}
+.watch-spec{max-width:400px;margin-top:48px}
+.watch-spec .plate .ph img{aspect-ratio:1}
+.watch-facts{margin-top:26px;display:flex;flex-direction:column;gap:8px}
+.watch-facts .f{font-family:var(--mono);font-size:12.5px;letter-spacing:.03em;color:var(--ink-soft)}
+.watch-facts .f b{color:var(--ink);font-weight:400}
+
+/* ================= ST 06 : custom ================= */
+.custom{max-width:1280px;margin:0 auto;padding:130px 40px 0}
+.custom-plate{margin-top:54px;box-shadow:0 18px 40px -20px rgba(26,23,15,.5)}
+.custom-plate img{width:100%;max-height:520px;object-fit:cover}
+.custom-row{
+  display:flex;justify-content:space-between;align-items:center;gap:26px;flex-wrap:wrap;
+  padding:22px 2px 0;
+}
+.custom-row .terms{display:flex;gap:26px;flex-wrap:wrap}
+.custom-row .t{display:flex;flex-direction:column;gap:3px}
+.custom-row .t .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--ink-faint);text-transform:uppercase}
+.custom-row .t .v{font-size:15px;font-weight:500}
+.cta{
+  display:inline-flex;align-items:center;gap:12px;text-decoration:none;
+  background:var(--ink);color:var(--paper);border-radius:2px;border:1.5px solid var(--ink);
+  font-family:var(--mono);font-size:13px;letter-spacing:.04em;padding:14px 24px;
+  box-shadow:0 3px 0 rgba(26,23,15,.25);
+  transition:background var(--fast) var(--ease),border-color var(--fast),transform 80ms var(--ease);
+}
+.cta:hover{background:var(--orange);border-color:var(--orange)}
+.cta:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(26,23,15,.25)}
+.cta .go{transition:transform var(--med) var(--ease)}
+.cta:hover .go{transform:translateX(4px)}
+
+/* ================= ST 07 : closure ================= */
+footer{margin-top:140px;border-top:1.5px solid var(--line)}
+.foot{max-width:1280px;margin:0 auto;padding:64px 40px 56px;display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap}
+.foot ​.hero-line{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--ink-soft);text-transform:uppercase}
+.spec-strip{max-width:none}
+.foot-left{display:flex;flex-direction:column;gap:22px}
+.sign{font-family:var(--mono);font-weight:700;font-size:20px;display:flex;align-items:center;gap:2px}
+.toy-dot{
+  display:inline-block;width:20px;height:20px;border-radius:50%;
+  background:var(--orange);border:1.5px solid var(--ink);
+  cursor:grab;touch-action:none;position:relative;z-index:6;
+  box-shadow:0 2px 0 rgba(26,23,15,.2);
+  will-change:transform;vertical-align:middle;
+}
+.toy-hero{float:right;margin-top:-4px}
+.toy-dot::after{
+  content:'';position:absolute;inset:-7px;border-radius:50%;
+  border:1.5px dashed rgba(26,23,15,.35);
+  animation:toy-hint 2.6s var(--ease) 1.2s 3;
+  opacity:0;
+}
+@keyframes toy-hint{0%{opacity:0;transform:scale(.7)}30%{opacity:1}100%{opacity:0;transform:scale(1.15)}}
+.toy-dot:active{cursor:grabbing}
+.toy-dot.flying{cursor:grab}
+.sign .amp{color:var(--orange);font-weight:400}
+.where{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);margin-top:4px}
+.foot-links{display:flex;gap:24px}
+.foot-links a{font-family:var(--mono);font-size:12.5px;text-decoration:none;color:var(--ink-soft);
+  border-bottom:1.5px solid transparent;padding-bottom:3px;transition:color var(--fast),border-color var(--fast)}
+.foot-links a:hover{color:var(--orange);border-color:var(--orange)}
+
+/* ================= panels ================= */
+.panel{position:fixed;inset:0;z-index:80;background:var(--paper);display:grid;grid-template-columns:1.05fr .95fr;
+  opacity:0;pointer-events:none;transform:translateY(16px);
+  transition:opacity 240ms var(--ease),transform 320ms var(--ease);overflow:auto}
+.panel.open{opacity:1;pointer-events:auto;transform:none}
+.panel-media{background:var(--paper-deep);border-right:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;padding:64px;min-height:100vh}
+.panel-media img{max-height:70vh;width:auto;max-width:100%;mix-blend-mode:multiply}
+.panel-body{padding:120px 68px 68px;display:flex;flex-direction:column;min-height:100vh}
+.panel-body h3{font-family:var(--mono);font-weight:700;font-size:clamp(30px,3.2vw,46px);letter-spacing:-.01em;text-transform:uppercase;line-height:1.06;margin:16px 0 30px}
+.p-facts{display:flex;flex-direction:column;gap:13px}
+.p-facts .f{display:flex;gap:14px;align-items:baseline;font-size:15.5px;color:var(--ink-soft)}
+.p-facts .f::before{content:'';width:14px;height:1.5px;background:var(--orange);flex:none;transform:translateY(-4px)}
+.panel-body .obj-link{margin-top:auto;align-self:flex-start}
+.panel-close{position:fixed;top:18px;right:24px;z-index:85;appearance:none;cursor:pointer;
+  border:1.5px solid var(--ink);background:var(--paper);border-radius:2px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.06em;padding:11px 17px;color:var(--ink);
+  box-shadow:0 3px 0 rgba(26,23,15,.18);
+  transition:background var(--fast),color var(--fast),transform 80ms;opacity:0;pointer-events:none}
+.panel-close.show{opacity:1;pointer-events:auto}
+.panel-close:hover{background:var(--ink);color:var(--paper)}
+.panel-close:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(26,23,15,.18)}
+
+/* ================= mobile : separately authored ================= */
+.msheet{display:none}
+@media (max-width:900px){
+  :root{--rail-w:26px}
+  .rail{border-right-width:1px;background:
+    repeating-linear-gradient(180deg,transparent 0 44px,var(--line) 44px 45.5px) right 6px top/10px 100% no-repeat}
+  .rail .st-mark{display:none}
+  .rail .rail-code{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(180deg);
+  writing-mode:vertical-rl;font-family:var(--mono);font-size:10px;letter-spacing:.32em;
+  color:var(--ink-faint);white-space:nowrap;
+}
+.rail .carriage{right:-6px;width:11px;height:20px}
+  .toolchip{left:auto;right:70px;top:14px}
+  .toolchip .nav-item{display:none}
+  .wordmark{border-right:0;padding:11px 14px}
+  .shopchip{display:none}
+  .menu-chip{
+    display:flex;position:fixed;top:14px;right:16px;z-index:72;cursor:pointer;
+    appearance:none;background:var(--ink);color:var(--paper);border:1.5px solid var(--ink);border-radius:2px;
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;padding:12px 15px;
+    box-shadow:0 3px 0 rgba(26,23,15,.18);
+  }
+  .msheet{
+    display:block;position:fixed;inset:0;z-index:71;background:var(--paper);
+    padding:78px 22px 30px;overflow:auto;
+    opacity:0;pointer-events:none;transform:translateY(10px);
+    transition:opacity 210ms var(--ease),transform 290ms var(--ease);
+  }
+  .msheet.open{opacity:1;pointer-events:auto;transform:none}
+  .ms-group{border-top:1.5px solid var(--line);padding:18px 0}
+  .ms-group .tag{margin-bottom:10px;display:block}
+  .ms-link{
+    display:flex;justify-content:space-between;align-items:baseline;width:100%;
+    background:none;border:0;cursor:pointer;text-decoration:none;text-align:left;
+    font-family:var(--mono);font-weight:700;font-size:21px;letter-spacing:-.01em;text-transform:uppercase;color:var(--ink);
+    padding:10px 0;
+  }
+  .ms-link small{font-family:var(--mono);font-size:9.5px;color:var(--ink-faint);letter-spacing:.1em;font-weight:400}
+  .ms-card{margin-top:24px;border:1.5px solid var(--ink);border-radius:2px;overflow:hidden;background:var(--paper-deep)}
+  .ms-card img{width:100%;aspect-ratio:1.6;object-fit:cover;mix-blend-mode:multiply}
+  .ms-card .rc-cap{padding:9px 12px;border-top:1.5px solid var(--ink);font-family:var(--mono);font-size:9.5px;
+    letter-spacing:.1em;color:var(--ink-soft);text-transform:uppercase;display:flex;justify-content:space-between;background:var(--paper)}
+
+  .hero{grid-template-columns:1fr;min-height:auto;padding:104px 22px 30px;gap:30px}
+  .hero h1{font-size:clamp(30px,8.6vw,40px)}
+  ​.hero-line{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--ink-soft);text-transform:uppercase}
+.spec-strip{max-width:none}
+  .spec-cell{padding:10px 13px}
+  .clock-cell{padding:10px 11px}
+  .practice-inner{padding:76px 22px 84px}
+  .pr-stations{grid-template-columns:repeat(3,1fr);gap:14px 8px}
+  .pr-plates{grid-template-columns:1fr;gap:16px;margin-top:56px}
+  .objects{padding:84px 22px 0}
+  .bench{grid-template-columns:1fr;gap:16px}
+  .b-plate .ph{aspect-ratio:4/3}
+  .tsl{padding:96px 22px 0}
+  ​.fig-cap{font-family:var(--mono);font-size:12px;letter-spacing:.05em;color:var(--ink-soft);text-transform:uppercase;margin:38px auto 0;max-width:70ch}
+.tsl-facts{flex-direction:column}
+  .tsl-fact{border-right:0;border-bottom:1.5px solid var(--line)}
+  .tsl-fact:last-child{border-bottom:0}
+  .pen{margin-top:96px}
+  .pen-inner{padding:0 22px}
+  .pen .ph{margin:0 -22px}
+  .pen-chip{position:static;margin:-30px 0 36px;max-width:none}
+  .watch{padding:96px 22px 0}
+  .custom{padding:96px 22px 0}
+  .custom-row{padding:16px 18px}
+  footer{margin-top:100px}
+  .foot{padding:48px 22px 40px}
+  .panel{grid-template-columns:1fr}
+  .panel-media{min-height:42vh;padding:80px 22px 22px;border-right:0;border-bottom:1.5px solid var(--line)}
+  .panel-media img{max-height:34vh}
+  .panel-body{padding:32px 22px 44px;min-height:auto}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms !important;animation:none !important}
+  .rv,.bench .b-plate{opacity:1;transform:none}
+}
+
+/* ===== HARD FINISH (review instrument, toggled with ?hard=1) =====
+   hypothesis: the softness lives in warm tint, grey hierarchy,
+   radii, soft shadows and hairline delicacy. this strips all five. */
+html.hard{
+  --paper:#ffffff;
+  --paper-deep:#f2f2f0;
+  --ink:#000000;
+  --ink-soft:#000000;
+  --ink-faint:#6e6e6e;
+  --line:rgba(0,0,0,.85);
+  --line-soft:rgba(0,0,0,.2);
+}
+html.hard *{border-radius:0 !important}
+html.hard body::after{opacity:.04}
+html.hard main{background:none}
+html.hard .plate .ph,html.hard .bench .b-plate .ph,html.hard .custom-plate{box-shadow:none !important;border:1px solid #000}
+html.hard .toolchip,html.hard .shopchip,html.hard .menu-chip,html.hard .cta{box-shadow:none !important}
+html.hard .lbl .rule{height:1.5px;background:#000}
+html.hard .toy-dot{box-shadow:none;border-radius:50% !important}
+html.hard .rail{border-right-color:#000}
+html.hard .pen-chip{box-shadow:none;border-width:1px}
+html.hard .room{box-shadow:0 0 0 1px #000 !important}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- the rail : the page is one ruler -->
+<div class="rail" aria-hidden="true">
+  <div class="rail-code">ROUND &amp; SQUARE · TOOL WORKS · EST 2011</div>
+  <div class="carriage" data-carriage></div>
+</div>
+
+<!-- nav : machined tool chip -->
+<nav class="toolchip" aria-label="Main">
+  <a class="wordmark" href="#" aria-label="Round and Square home">R<span class="amp">&amp;</span>S</a>
+
+  <div class="nav-item" data-room>
+    <button class="nav-btn" aria-expanded="false" aria-haspopup="true">Objects <span class="chev" aria-hidden="true"></span></button>
+    <div class="room" role="menu" aria-label="Objects">
+      <div class="room-links">
+        <button class="room-link" data-open-panel="tsl" role="menuitem">
+          <span class="rl-name"><span class="dot"></span>DIAMOND BURRS</span>
+          <span class="rl-fact">Electroplated grit on ground steel shanks.</span>
+        </button>
+        <button class="room-link" data-open-panel="pen" role="menuitem">
+          <span class="rl-name"><span class="dot"></span>MILLING HEADS</span>
+          <span class="rl-fact">Indexable heads, ready for the spindle.</span>
+        </button>
+        <button class="room-link" data-open-panel="watch" role="menuitem">
+          <span class="rl-name"><span class="dot"></span>TWIST DRILLS</span>
+          <span class="rl-fact">Ground high-speed steel, sharpened by hand.</span>
+        </button>
+      </div>
+      <div class="room-card" aria-hidden="true">
+        <img src="assets/burrs.webp" alt="">
+        <div class="rc-cap"><span>DIAMOND BURRS</span><b>SET OF THREE</b></div>
+      </div>
+      <div class="room-note">Ground and shipped from one shop</div>
+    </div>
+  </div>
+
+  <div class="nav-item" data-room>
+    <button class="nav-btn" aria-expanded="false" aria-haspopup="true">Custom <span class="chev" aria-hidden="true"></span></button>
+    <div class="room slim" role="menu" aria-label="Custom orders">
+      <div class="room-links">
+        <button class="room-link" data-open-panel="custom" role="menuitem">
+          <span class="rl-name"><span class="dot"></span>BATCH GRINDING</span>
+          <span class="rl-fact">Fifty-piece minimum · ground to your drawing</span>
+        </button>
+      </div>
+      <div class="room-note">Batches leave in order of arrival</div>
+    </div>
+  </div>
+
+  <div class="nav-item" data-room>
+    <button class="nav-btn" aria-expanded="false" aria-haspopup="true">About <span class="chev" aria-hidden="true"></span></button>
+    <div class="room slim" role="menu" aria-label="About">
+      <div class="room-links">
+        <button class="room-link" data-open-panel="custom" role="menuitem">
+          <span class="rl-name"><span class="dot"></span>THE SHOP</span>
+          <span class="rl-fact">Two people, machining since 2011</span>
+        </button>
+      </div>
+      <div class="room-note">A design study · not a real shop</div>
+    </div>
+  </div>
+</nav>
+
+
+<button class="menu-chip" aria-expanded="false" aria-controls="msheet">MENU</button>
+
+<div class="msheet" id="msheet">
+  <div class="ms-group">
+    <span class="tag">Objects</span>
+    <button class="ms-link" data-open-panel="tsl">Diamond burrs <small>SET OF 3</small></button>
+    <button class="ms-link" data-open-panel="pen">Milling heads <small>INDEXABLE</small></button>
+    <button class="ms-link" data-open-panel="watch">Twist drills <small>HSS</small></button>
+  </div>
+  <div class="ms-group">
+    <span class="tag">Practice</span>
+    <button class="ms-link" data-open-panel="custom">Batch grinding <small>50+ PIECES</small></button>
+  </div>
+  <div class="ms-card">
+    <img src="assets/burrs.webp" alt="Diamond burrs, close">
+    <div class="rc-cap"><span>DIAMOND BURRS</span><span>SET OF THREE</span></div>
+  </div>
+</div>
+
+<main id="main">
+
+  <!-- ST 00 : arrival -->
+  <section class="station hero" data-station="ST·00 ARRIVAL">
+    <div class="hero-state">
+      <h1 class="rv">
+        <span class="row">We make</span>
+        <span class="row ind">the tools that</span>
+        <span class="row">make <span class="etch">the parts.</span></span>
+      </h1>
+      <div class="lbl drop-hidden" data-drop data-drop-delay="420" style="max-width:560px">
+        <span class="lk">Shop <span class="toy-dot toy-hero" data-toy aria-hidden="true" title="flick me"></span></span>
+        <span class="rule"></span>
+        <span class="lv">Two people · one shop · est. 2011</span>
+      </div>
+      <div class="lbl drop-hidden" data-drop data-drop-delay="520" style="max-width:560px;margin-top:18px">
+        <span class="lk">Materials</span>
+        <span class="rule"></span>
+        <span class="lv">Steel · carbide · diamond</span>
+      </div>
+      <div class="lbl drop-hidden" data-drop data-drop-delay="620" style="max-width:560px;margin-top:18px" aria-label="Time on this page since you arrived">
+        <span class="lk">Time on this page</span>
+        <span class="rule"></span>
+        <span class="lv">D <b data-u="d">0</b> · H <b data-u="h">00</b> · M <b data-u="m">00</b> · S <b class="val-orange" data-u="s">00</b></span>
+      </div>
+    </div>
+    <div class="hero-object">
+      <div class="sleeve drop-hidden" data-drop data-drop-delay="160">
+        <img src="assets/burrs.webp" alt="Three diamond-coated burrs, close up">
+        <div class="s-cap"><span>DIAMOND BURRS · SET OF THREE</span><b>ELECTROPLATED</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ST 01 : practice -->
+  <section class="station practice" data-station="ST·01 PRACTICE">
+    <div class="practice-inner">
+      <p class="claim rv" style="margin-top:0;max-width:30ch">Draw, turn, mill, grind, <span class="etch">measure,</span> sharpen.</p>
+
+      <div class="pr-plates">
+        <div class="plate rv">
+          <div class="ph"><img src="assets/shop-cnc.webp" alt="A CNC lathe with coolant lines, mid job"></div>
+          <div class="p-cap"><span>THE SHOP · TURNING</span><span>BAY ONE</span></div>
+        </div>
+        <div class="plate rv" style="transition-delay:150ms">
+          <div class="ph"><img src="assets/shop-lathe.webp" alt="The old manual lathe, still in service"></div>
+          <div class="p-cap"><span>THE OLD LATHE</span><span>STILL IN SERVICE</span></div>
+        </div>
+      </div>
+      <div class="pr-foot rv">
+        <p class="pr-copy"><b>The same pair of hands</b> draws, machines, and inspects every tool before it ships.</p>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ST 02 : the bench -->
+  <section class="station objects" data-station="ST·02 OBJECTS">
+    <p class="claim rv bench-claim">The tools.</p>
+    <div class="bench" data-bench>
+      <button class="b-plate" data-open-panel="tsl">
+        <span class="ph"><img src="assets/burrs.webp" alt="Three diamond-coated burrs"></span>
+        <span class="p-cap"><span>DIAMOND BURRS</span><span class="go">→</span></span>
+      </button>
+      <button class="b-plate" data-open-panel="pen">
+        <span class="ph"><img src="assets/mill-heads.webp" alt="Indexable milling heads standing on a steel bench"></span>
+        <span class="p-cap"><span>MILLING HEADS</span><span class="go">→</span></span>
+      </button>
+      <button class="b-plate" data-open-panel="watch">
+        <span class="ph"><img src="assets/drills-yellow.webp" alt="Two twist drills on a yellow ground"></span>
+        <span class="p-cap"><span>TWIST DRILLS</span><span class="go">→</span></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ST 03 : time since launch -->
+  <section class="station tsl" data-station="ST·03 TIME SINCE LAUNCH">
+    <p class="claim rv">Grit where it matters, <span class="etch">nowhere else.</span></p>
+    <div class="tsl-object rv" style="transition-delay:120ms">
+      <img src="assets/burrs.webp" alt="Close view of three diamond burrs, grit ends first">
+    </div>
+    <div class="lbl rv" style="transition-delay:200ms;max-width:560px;margin:40px auto 0;text-align:left">
+      <span class="lk">Coating</span>
+      <span class="rule"></span>
+      <span class="lv">Electroplated diamond grit, bonded to the working end only</span>
+    </div>
+    <div class="lbl rv" style="transition-delay:260ms;max-width:560px;margin:14px auto 0;text-align:left">
+      <span class="lk">Shank</span>
+      <span class="rule"></span>
+      <span class="lv">Ground steel, sized for common collets</span>
+    </div>
+  </section>
+
+  <!-- ST 04 : pen band -->
+  <section class="station pen" data-station="ST·04 PEN TYPE-A">
+    <div class="pen-inner">
+      <div class="ph rv"><img src="assets/mill-heads.webp" alt="A family of indexable milling heads on the bench"></div>
+      <div class="pen-chip rv" style="transition-delay:140ms">
+        <p class="claim">Heads that outlive <span class="etch">their spindles.</span></p>
+        <p class="fig-cap" style="margin:14px 0 0;text-align:left">Indexable inserts, so a worn edge is a part, not a replacement</p>
+        <button class="obj-link" style="background:none;border:0;border-bottom:1.5px solid var(--ink);cursor:pointer" data-open-panel="pen">See the heads <span class="go">→</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ST 05 : watch -->
+  <section class="station watch" data-station="ST·05 SOLID STATE WATCH">
+    <p class="claim rv" style="margin-top:0">Sharpened <span class="etch">by hand.</span></p>
+    <div class="watch-spec rv" style="transition-delay:120ms">
+      <div class="plate">
+        <div class="ph"><img src="assets/drills-yellow.webp" alt="Two twist drills against a yellow ground"></div>
+        <div class="p-cap"><span>HSS TWIST DRILLS</span><span>PAIRS</span></div>
+      </div>
+      <div class="lbl" style="max-width:400px;margin:26px auto 0;text-align:left">
+        <span class="lk">Edge</span>
+        <span class="rule"></span>
+        <span class="lv">Ground high-speed steel, finished on the wheel by eye</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ST 06 : custom -->
+  <section class="station custom" data-station="ST·06 CUSTOM ORDERS">
+    <p class="claim rv" style="margin-top:0;max-width:32ch">Fifty or more, ground to <span class="etch">your drawing.</span></p>
+    <div class="custom-plate rv" style="transition-delay:120ms">
+      <img src="assets/shop-cnc.webp" alt="The CNC lathe set up for a batch run">
+    </div>
+    <div class="custom-row rv" style="transition-delay:200ms">
+      <div class="lbl" style="margin:0;min-width:420px">
+        <span class="lk">Terms</span>
+        <span class="rule"></span>
+        <span class="lv">Minimum 50 pieces · your print or ours · quoted in a day</span>
+      </div>
+      <button class="cta" data-open-panel="custom" style="cursor:pointer">Start a batch <span class="go">→</span></button>
+    </div>
+  </section>
+</main>
+
+<!-- ST 07 : closure -->
+<footer class="station" data-station="ST·07 SIGN-OFF">
+  <div class="foot">
+    <div class="foot-left rv">
+      <div class="lbl" style="min-width:340px;margin-top:0" aria-label="Your visit so far">
+        <span class="lk">Your visit, so far</span>
+        <span class="rule"></span>
+        <span class="lv">D <b data-u="d">0</b> · H <b data-u="h">00</b> · M <b data-u="m">00</b> · S <b class="val-orange" data-u="s">00</b></span>
+      </div>
+      <div>
+        <div class="sign">R<span class="amp">&amp;</span>S</div>
+        <div class="where">Two people · one shop · est. 2011 · a design study, not a real shop</div>
+      </div>
+    </div>
+    <div class="foot-links rv" style="transition-delay:120ms">
+      <span style="font-family:var(--mono);font-size:12.5px;color:var(--ink-faint)">A design study · photography CC0, see CREDITS.txt</span>
+    </div>
+  </div>
+</footer>
+
+<!-- panels -->
+<button class="panel-close" data-close-panel>CLOSE ✕</button>
+
+<div class="panel" id="panel-custom" role="dialog" aria-modal="true" aria-label="Batch grinding">
+  <div class="panel-media"><img src="assets/shop-cnc.webp" alt="The CNC lathe set for a batch"></div>
+  <div class="panel-body">
+    <span class="tag">BATCH GRINDING</span>
+    <h3>Your drawing, our wheels</h3>
+    <div class="p-facts">
+      <span class="f">Fifty-piece minimum per geometry</span>
+      <span class="f">Send a print, or we draw it with you</span>
+      <span class="f">Quoted within a day, first article before the run</span>
+    </div>
+    <p class="fig-cap" style="margin-top:26px;text-align:left">This is a design study; the order path is not real</p>
+  </div>
+</div>
+
+<div class="panel" id="panel-tsl" role="dialog" aria-modal="true" aria-label="Time Since Launch">
+  <div class="panel-media"><img src="assets/burrs.webp" alt="Diamond burrs, close"></div>
+  <div class="panel-body">
+    <span class="tag">DIAMOND BURRS</span>
+    <h3>Burr set</h3>
+    <div class="p-facts">
+      <span class="f">Electroplated diamond grit on ground steel shanks</span>
+      <span class="f">Grit only where it cuts; the shank stays clean</span>
+      <span class="f">Sold as a set of three</span>
+    </div>
+  </div>
+</div>
+
+<div class="panel" id="panel-pen" role="dialog" aria-modal="true" aria-label="Pen Type-A">
+  <div class="panel-media"><img src="assets/mill-heads.webp" alt="Milling heads on the bench"></div>
+  <div class="panel-body">
+    <span class="tag">MILLING HEADS</span>
+    <h3>Milling heads</h3>
+    <div class="p-facts">
+      <span class="f">Indexable carbide inserts on steel bodies</span>
+      <span class="f">A worn edge is a part you replace, not a head you throw away</span>
+      <span class="f">Arbor sizes to fit common spindles</span>
+    </div>
+  </div>
+</div>
+
+<div class="panel" id="panel-watch" role="dialog" aria-modal="true" aria-label="Solid State Watch">
+  <div class="panel-media"><img src="assets/drills-yellow.webp" alt="Twist drills on yellow"></div>
+  <div class="panel-body">
+    <span class="tag">TWIST DRILLS</span>
+    <h3>Twist drills</h3>
+    <div class="p-facts">
+      <span class="f">Ground high-speed steel</span>
+      <span class="f">Point angles finished on the wheel, checked by eye</span>
+      <span class="f">Sold in matched pairs</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  /* hard-finish toggle: review instrument only */
+  if(!/[?&]soft=1/.test(location.search))document.documentElement.classList.add('hard');
+
+  /* font guard */
+  var guard=setTimeout(unveil,600);
+  if(document.fonts&&document.fonts.ready){document.fonts.ready.then(unveil);}
+  function unveil(){clearTimeout(guard);document.documentElement.classList.remove('fonts-pending');}
+
+  /* labeled clock : starts at your arrival */
+  var t0=Date.now();
+  function pad(n){n=String(n);return n.length<2?'0'+n:n;}
+  function tick(){
+    var s=Math.floor((Date.now()-t0)/1000);
+    var d=Math.floor(s/86400),h=pad(Math.floor(s%86400/3600)),m=pad(Math.floor(s%3600/60)),sec=pad(s%60);
+    document.querySelectorAll('[data-u="d"]').forEach(function(e){e.textContent=d;});
+    document.querySelectorAll('[data-u="h"]').forEach(function(e){e.textContent=h;});
+    document.querySelectorAll('[data-u="m"]').forEach(function(e){e.textContent=m;});
+    document.querySelectorAll('[data-u="s"]').forEach(function(e){e.textContent=sec;});
+  }
+  tick();setInterval(tick,1000);
+
+  var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* reveals */
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:.15,rootMargin:'0px 0px -6% 0px'});
+  document.querySelectorAll('.rv').forEach(function(el){io.observe(el);});
+
+  /* ============ physics : drop with gravity, land, settle ============ */
+  function dropIn(el,delay){
+    if(reduced){el.style.opacity='1';return;}
+    var start=null,v=0,y=-Math.max(140,el.getBoundingClientRect().height*0.55),done=false;
+    var rot=(Math.random()*2-1)*1.6;
+    el.style.opacity='0';
+    setTimeout(function(){
+      el.style.opacity='1';
+      function step(ts){
+        if(done)return;
+        if(!start)start=ts;
+        var dt=Math.min(32,(ts-(el.__last||ts)))/1000;el.__last=ts;
+        v+=2600*dt;            /* gravity */
+        y+=v*dt*60/60*1;       /* integrate */
+        if(y>=0){              /* land: bounce with restitution */
+          y=0;
+          if(Math.abs(v)>60){v=-v*0.26;}
+          else{
+            done=true;
+            el.style.transform='';
+            el.classList.add('settled');
+            return;
+          }
+        }
+        var r=rot*Math.min(1,Math.abs(y)/160);
+        el.style.transform='translateY('+y+'px) rotate('+r+'deg)';
+        requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    },delay||0);
+  }
+
+  /* hero drops at load */
+  window.addEventListener('load',function(){
+    document.querySelectorAll('[data-drop]').forEach(function(el){
+      dropIn(el,parseInt(el.getAttribute('data-drop-delay')||'0',10));
+    });
+  });
+
+  /* bench : objects dropped onto the bench one by one */
+  var bench=document.querySelector('[data-bench]');
+  if(bench){
+    var plates=[].slice.call(bench.querySelectorAll('.b-plate'));
+    var bio=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          bio.disconnect();
+          plates.forEach(function(p,i){dropIn(p,i*240);});
+          setTimeout(function(){bench.classList.add('landed');},plates.length*240+900);
+        }
+      });
+    },{threshold:.25});
+    bio.observe(bench);
+    if(reduced){plates.forEach(function(p){p.style.opacity='1';});bench.classList.add('landed');}
+  }
+
+  /* nav rooms : bridge + grace close */
+  var items=[].slice.call(document.querySelectorAll('[data-room]'));
+  var closeTimer=null;
+  function openItem(it){
+    clearTimeout(closeTimer);
+    items.forEach(function(o){
+      var is=o===it;
+      o.classList.toggle('open',is);
+      o.querySelector('.nav-btn').setAttribute('aria-expanded',is?'true':'false');
+    });
+  }
+  function closeAll(){
+    items.forEach(function(o){o.classList.remove('open');o.querySelector('.nav-btn').setAttribute('aria-expanded','false');});
+  }
+  items.forEach(function(it){
+    var btn=it.querySelector('.nav-btn');
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      if(it.classList.contains('open')){closeAll();}else{openItem(it);}
+    });
+    btn.addEventListener('mouseenter',function(){openItem(it);});
+    it.addEventListener('mouseenter',function(){
+      if(it.classList.contains('open'))clearTimeout(closeTimer);
+    });
+    it.addEventListener('mouseleave',function(){
+      clearTimeout(closeTimer);
+      closeTimer=setTimeout(closeAll,340);
+    });
+  });
+  document.addEventListener('click',function(){closeAll();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeAll();closeSheet();closePanels();}});
+
+  /* mobile sheet */
+  var menuBtn=document.querySelector('.menu-chip'),sheet=document.getElementById('msheet');
+  function closeSheet(){if(sheet){sheet.classList.remove('open');menuBtn.setAttribute('aria-expanded','false');menuBtn.textContent='MENU';}}
+  if(menuBtn){menuBtn.addEventListener('click',function(){
+    var open=sheet.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded',open?'true':'false');
+    menuBtn.textContent=open?'CLOSE':'MENU';
+  });}
+
+  /* panels */
+  var closeBtn=document.querySelector('.panel-close');
+  var lastFocus=null;
+  function openPanel(id){
+    lastFocus=document.activeElement;
+    closeAll();closeSheet();
+    var p=document.getElementById('panel-'+id);
+    if(!p)return;
+    p.classList.add('open');closeBtn.classList.add('show');
+    document.body.style.overflow='hidden';
+    closeBtn.focus();
+  }
+  function closePanels(){
+    var any=false;
+    document.querySelectorAll('.panel.open').forEach(function(p){p.classList.remove('open');any=true;});
+    if(any){closeBtn.classList.remove('show');document.body.style.overflow='';if(lastFocus)lastFocus.focus();}
+  }
+  document.querySelectorAll('[data-open-panel]').forEach(function(el){
+    el.addEventListener('click',function(){openPanel(el.getAttribute('data-open-panel'));});
+  });
+  closeBtn.addEventListener('click',closePanels);
+
+  /* ============ the toy : pure delight, zero duty ============
+     the orange dot from their watch strap. flick it. it comes home. */
+  var toy=document.querySelector('[data-toy]');
+  if(toy&&!reduced){
+    var bounds=function(){return document.querySelector('.hero').getBoundingClientRect();};
+    var tx=0,ty=0,tvx=0,tvy=0,dragging=false,flying=false,idleT=null,homing=false;
+    var px=0,py=0,pt=0,traf=null;
+    function toyFrame(){
+      if(dragging||homing){traf=requestAnimationFrame(toyFrame);return;}
+      if(flying){
+        var b=bounds(),r=toy.getBoundingClientRect();
+        tvx*=0.962;tvy*=0.962;
+        tx+=tvx/60;ty+=tvy/60;
+        var homeX=r.left-tx,homeY=r.top-ty;
+        if(homeX+tx<b.left){tx=b.left-homeX;tvx=Math.abs(tvx)*0.55;}
+        if(homeX+tx+r.width>b.right){tx=b.right-r.width-homeX;tvx=-Math.abs(tvx)*0.55;}
+        if(homeY+ty<b.top){ty=b.top-homeY;tvy=Math.abs(tvy)*0.55;}
+        if(homeY+ty+r.height>b.bottom){ty=b.bottom-r.height-homeY;tvy=-Math.abs(tvy)*0.55;}
+        toy.style.transform='translate('+tx+'px,'+ty+'px)';
+        if(Math.abs(tvx)<12&&Math.abs(tvy)<12){
+          flying=false;
+          clearTimeout(idleT);
+          idleT=setTimeout(goHome,900);
+        }
+      }
+      traf=requestAnimationFrame(toyFrame);
+    }
+    function goHome(){
+      homing=true;
+      var sx=tx,sy=ty,st=null;
+      function home(ts){
+        if(!st)st=ts;
+        var p=Math.min(1,(ts-st)/620);
+        var e=1-Math.pow(1-p,3);
+        tx=sx*(1-e);ty=sy*(1-e);
+        toy.style.transform='translate('+tx+'px,'+ty+'px)';
+        if(p<1)requestAnimationFrame(home);
+        else{homing=false;tx=0;ty=0;tvx=0;tvy=0;toy.style.transform='';}
+      }
+      requestAnimationFrame(home);
+    }
+    toy.addEventListener('pointerdown',function(e){
+      e.preventDefault();
+      toy.setPointerCapture(e.pointerId);
+      dragging=true;flying=false;homing=false;clearTimeout(idleT);
+      px=e.clientX;py=e.clientY;pt=performance.now();tvx=0;tvy=0;
+      if(!traf)toyFrame();
+    });
+    toy.addEventListener('pointermove',function(e){
+      if(!dragging)return;
+      var now=performance.now(),dt=Math.max(8,now-pt);
+      tvx=(e.clientX-px)/dt*1000;tvy=(e.clientY-py)/dt*1000;
+      tx+=e.clientX-px;ty+=e.clientY-py;
+      px=e.clientX;py=e.clientY;pt=now;
+      toy.style.transform='translate('+tx+'px,'+ty+'px)';
+    });
+    toy.addEventListener('pointerup',function(){
+      dragging=false;
+      var sp=Math.hypot(tvx,tvy);
+      if(sp>1500){tvx*=1500/sp;tvy*=1500/sp;}
+      flying=true;toy.classList.add('flying');
+    });
+  }
+
+  /* ================= damped indicators =================
+     target follows scroll; position eases toward target:
+     accelerates, then settles. never 1:1 with the wheel. */
+  var carriage=document.querySelector('[data-carriage]');
+  var marks=[];
+
+  /* station marks on the rail */
+  var railEl=document.querySelector('.rail');
+  function buildMarks(){
+    marks.forEach(function(m){m.el.remove();});
+    marks=[];
+    if(window.innerWidth<=900)return;
+    var docH=document.documentElement.scrollHeight-window.innerHeight;
+    if(docH<=0)return;
+    document.querySelectorAll('[data-station]').forEach(function(st){
+      var y=st.getBoundingClientRect().top+window.scrollY;
+      var frac=Math.min(1,Math.max(0,y/(docH+window.innerHeight*0.0001)));
+      return;
+      var el=document.createElement('div');
+      el.className='st-mark';
+      el.textContent='';
+      el.style.top=(8+frac*84)+'%';
+      railEl.appendChild(el);
+      marks.push({el:el,y:y,frac:frac});
+    });
+    var minGap=5.2, last=-100;
+    marks.forEach(function(m){
+      var t=8+m.frac*84;
+      if(t-last<minGap)t=last+minGap;
+      last=t;
+      m.el.style.top=t+'%';
+    });
+  }
+
+  var pos=0, target=0, raf=null;
+  function targets(){
+    var docH=document.documentElement.scrollHeight-window.innerHeight;
+    target=docH>0?window.scrollY/docH:0;
+  }
+  function frame(){
+    pos+=(target-pos)*0.075;
+    if(carriage){
+      var track=window.innerHeight-46;
+      carriage.style.transform='translateY('+(10+pos*(track-20))+'px)';
+    }
+    marks.forEach(function(m){
+      var docH=document.documentElement.scrollHeight-window.innerHeight;
+      m.el.classList.toggle('lit',window.scrollY+window.innerHeight*0.5>=m.y);
+    });
+    raf=requestAnimationFrame(frame);
+  }
+  if(reduced){
+    targets();
+    if(carriage){carriage.style.transform='translateY('+(10+target*(window.innerHeight-66))+'px)';}
+    window.addEventListener('scroll',function(){targets();if(carriage){carriage.style.transform='translateY('+(10+target*(window.innerHeight-66))+'px)';}},{passive:true});
+  }else{
+    targets();buildMarks();
+    window.addEventListener('scroll',targets,{passive:true});
+    window.addEventListener('resize',function(){targets();buildMarks();});
+    window.addEventListener('load',buildMarks);
+    frame();
+  }
+})();
+</script>
+</body>
+</html>
