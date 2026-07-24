@@ -19,8 +19,8 @@
   --ink:#1a170f;
   --ink-soft:#5b5340;
   --ink-faint:#948a72;
-  --orange:#FF8800;
-  --orange-soft:rgba(228,87,15,.08);
+  --orange:#f8d000;
+  --orange-soft:rgba(248,208,0,.12);
   --line:rgba(26,23,15,.22);
   --line-soft:rgba(26,23,15,.09);
   --ease:linear(0 0.0%, 0.032 2.1%, 0.0819 6.2%, 0.1281 10.4%, 0.1779 14.6%, 0.2242 18.8%, 0.267 22.9%, 0.3167 27.1%, 0.3559 31.2%, 0.4021 35.4%, 0.4448 39.6%, 0.4875 43.8%, 0.5302 47.9%, 0.5659 52.1%, 0.6049 56.2%, 0.6513 60.4%, 0.6833 64.6%, 0.7188 68.8%, 0.7615 72.9%, 0.7865 77.1%, 0.8434 81.2%, 0.9288 85.4%, 0.9964 89.6%, 1 93.8%, 1 97.9%, 1 100.0%);
@@ -60,7 +60,7 @@ a{color:inherit}
 .lbl .lv b{font-weight:400;color:var(--ink)}
 .lbl .lv .bk{color:var(--ink-faint)}
 .lbl.right{text-align:right}
-.lbl .lv .val-orange{color:var(--orange)}
+.lbl .lv .val-orange{color:#8a6d00}
 
 /* engraved label voice */
 .tag{font-family:var(--mono);font-size:11px;letter-spacing:.09em;color:var(--ink-soft);text-transform:uppercase}
@@ -174,7 +174,7 @@ a{color:inherit}
   font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--ink-soft);text-transform:uppercase;
   display:flex;justify-content:space-between;background:var(--paper);
 }
-.room-card .rc-cap b{color:var(--orange);font-weight:400}
+.room-card .rc-cap b{color:#8a6d00;font-weight:400}
 .room-note{padding:10px 15px;font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;color:var(--ink-faint);
   border-top:1.5px solid var(--line);grid-column:1/-1;text-transform:uppercase;background:var(--paper)}
 .room-note a{color:var(--ink-soft)}
@@ -225,7 +225,7 @@ main{padding-left:var(--rail-w)}
 .clock-cell{display:flex;flex-direction:column;gap:3px;justify-content:center;padding:12px 14px;border-right:1.5px solid var(--line)}
 .clock-cell:last-child{border-right:0}
 .clock-cell .v{font-family:var(--mono);font-size:16px;font-variant-numeric:tabular-nums;color:var(--ink)}
-.clock-cell.sec .v{color:var(--orange)}
+.clock-cell.sec .v{color:#8a6d00}
 .clock-cell .k{font-family:var(--mono);font-size:9px;letter-spacing:.13em;color:var(--ink-faint)}
 
 .hero-object{position:relative;align-self:stretch;display:flex;align-items:center}
@@ -245,7 +245,7 @@ main{padding-left:var(--rail-w)}
   font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);
   background:var(--paper);position:relative;z-index:3;
 }
-.sleeve .s-cap b{font-weight:400;color:var(--orange)}
+.sleeve .s-cap b{font-weight:400;color:#8a6d00}
 
 /* ================= ST 01 : practice ================= */
 .practice{background:var(--paper-deep);border-top:1.5px solid var(--line);border-bottom:1.5px solid var(--line)}
@@ -447,13 +447,14 @@ footer{margin-top:140px;border-top:1.5px solid var(--line);padding-left:var(--ra
   .rail{border-right-width:1px;background:
     repeating-linear-gradient(180deg,transparent 0 44px,var(--line) 44px 45.5px) right 6px top/10px 100% no-repeat}
   .rail .st-mark{display:none}
+  .rail .rail-code{display:none}
   .rail .rail-code{
   position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(180deg);
   writing-mode:vertical-rl;font-family:var(--mono);font-size:10px;letter-spacing:.32em;
   color:var(--ink-faint);white-space:nowrap;
 }
 .rail .carriage{right:-6px;width:11px;height:20px}
-  .toolchip{left:auto;right:70px;top:14px}
+  .toolchip{left:14px;right:auto;top:14px}
   .toolchip .nav-item{display:none}
   .wordmark{border-right:0;padding:11px 14px}
   .shopchip{display:none}
@@ -485,7 +486,7 @@ footer{margin-top:140px;border-top:1.5px solid var(--line);padding-left:var(--ra
     letter-spacing:.1em;color:var(--ink-soft);text-transform:uppercase;display:flex;justify-content:space-between;background:var(--paper)}
 
   .hero{grid-template-columns:1fr;min-height:auto;padding:104px 22px 30px;gap:30px}
-  .hero h1{font-size:clamp(30px,8.6vw,40px)}
+  .hero h1{font-size:clamp(28px,8.2vw,38px);word-spacing:-.28ch}
   ​.hero-line{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--ink-soft);text-transform:uppercase}
 .spec-strip{max-width:none}
   .spec-cell{padding:10px 13px}
