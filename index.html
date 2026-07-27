@@ -41,7 +41,7 @@ html,body{overflow-x:clip}
 .toolchip,.shopchip,.menu-chip{position:relative;z-index:2}
 .toolchip{z-index:60}.shopchip{z-index:60}
 
-body{background:#f2eee4 url('assets/paper.webp') repeat;background-size:520px auto;color:var(--ink);font-family:var(--body);font-weight:400;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{background:#f2eee4 url('assets/paper.webp') repeat;background-size:512px auto;color:var(--ink);font-family:var(--body);font-weight:400;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
 .etch{color:var(--yellow)}
 img{display:block;max-width:100%}
 a{color:inherit}
@@ -51,7 +51,7 @@ a{color:inherit}
 :focus-visible{outline:2px solid var(--yellow-ink);outline-offset:3px}
 
 /* the R&S label grammar : engraved tag, ruled ledger line, value */
-.lbl{margin-top:26px;background:#f2eee4 url('assets/paper.webp') repeat;background-size:520px auto}
+.lbl{margin-top:26px;background:#f2eee4 url('assets/paper.webp') repeat;background-size:512px auto}
 .lbl .lk{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.07em;color:#000;display:block;padding-bottom:6px;text-transform:uppercase}
 .lbl .rule{display:block;height:2px;background:#000}
 .lbl .lv{font-family:var(--mono);font-size:16.5px;letter-spacing:.02em;color:#000;display:block;padding-top:7px;line-height:1.55}
@@ -227,8 +227,9 @@ main{padding-left:0}
 .hero-return .lv{font-family:var(--mono);font-size:15px;display:block;padding-top:7px}
 .hero-object{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;z-index:1}
 .holder{width:auto;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
-.tool-stage{height:100vh;margin-bottom:-4vh;position:relative}
-.tool-stage img{height:100%;width:auto;aspect-ratio:960/1440;display:block;mix-blend-mode:multiply}
+.tool-stage{height:96vh;margin-bottom:-5vh;position:relative}
+.tool-stage svg{height:100%;width:auto;aspect-ratio:336/600;display:block}
+.tool-stage #etch text{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;fill:#a7adb6}
 
 .hero h1{
   font-family:var(--mono);font-weight:700;font-size:clamp(44px,5.6vw,86px);
@@ -240,23 +241,27 @@ main{padding-left:0}
 .hero h1 .row.ind{padding-left:1.2ch}
 .hero-line{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--ink-soft);text-transform:uppercase}
 
-/* ===== the arrival poster : the page scrolls normally and the drill
-   DESCENDS through it, spinning up as it bites - drilling into the page.
-   translateY rides the damped chase (the air-cushion rate, page-wide) ===== */
-.hero-pin{height:190vh;position:relative}
-.hero-pin .hero{position:relative;height:100svh;margin:0 auto}
-.tool-stage{will-change:transform}
-.tool-stage img{will-change:transform;transform-origin:50% 50%}
+/* ===== the signature : scroll drives the drill =====
+   the hero holds still (sticky pin, the pen's own mechanic) while your
+   scroll plunges the drill through the bench rule. the spin is the flute
+   helix phasing - a drill going down is a drill drilling. ===== */
+.hero-pin{height:340vh;position:relative}
+.hero-pin .hero{position:sticky;top:0;height:100svh;margin:0 auto;overflow:hidden}
 @media (max-width:900px){
-  .hero-pin{height:150vh}
+  .hero-pin{height:240vh}
   .hero-state{left:22px;right:22px;top:13vh}
   .hero h1 .row.big{font-size:clamp(54px,15vw,80px)}
-  .hero-return{right:22px;bottom:4vh}
-  .tool-stage{height:74vh;margin-bottom:-3vh}
+  /* one compact live line BELOW the bench rule : the descending drill is
+     clipped at the bench, so nothing can ever collide with the readout */
+  .hero-return{left:22px;right:22px;bottom:1.4vh;width:auto}
+  .hero-return .lk{display:none}
+  .hero-return .rule{display:none}
+  .hero-return .lv{font-size:12.5px;padding-top:0}
+  .tool-stage{height:72vh;margin-bottom:-4vh}
 }
 @media (prefers-reduced-motion:reduce){
   .hero-pin{height:auto}
-  .hero-pin .hero{position:static}
+  .hero-pin .hero{position:static;overflow:visible}
 }
 
 /* ================= ST 01 : practice ================= */
@@ -286,7 +291,7 @@ main{padding-left:0}
 .pr-st.lit{color:var(--ink)}
 .pr-st.lit .n{color:var(--yellow-ink)}
 .pr-plates{display:grid;grid-template-columns:1.25fr 1fr;gap:20px;margin-top:78px;align-items:stretch}
-.plate{display:flex;flex-direction:column;gap:10px;background:#f2eee4 url('assets/paper.webp') repeat;background-size:520px auto}
+.plate{display:flex;flex-direction:column;gap:10px;background:#f2eee4 url('assets/paper.webp') repeat;background-size:512px auto}
 .plate .ph img{mix-blend-mode:multiply}
 .plate .ph{box-shadow:none;overflow:hidden;flex:1}
 .plate .ph img{width:100%;height:100%;object-fit:cover}
@@ -304,7 +309,7 @@ main{padding-left:0}
 .bench{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:58px;align-items:stretch}
 .bench .b-plate{
   appearance:none;font-family:var(--body);text-align:left;cursor:pointer;padding:0;
-  border:0;background:#f2eee4 url('assets/paper.webp') repeat;background-size:520px auto;
+  border:0;background:#f2eee4 url('assets/paper.webp') repeat;background-size:512px auto;
   display:flex;flex-direction:column;gap:10px;
   opacity:0;
 }
@@ -326,7 +331,7 @@ main{padding-left:0}
 .feature{max-width:1280px;margin:0 auto;padding:170px 40px 0}
 .feature .claim{max-width:30ch;margin:0}
 .feature-split{display:grid;grid-template-columns:1.2fr .9fr;gap:64px;align-items:center;margin-top:56px}
-.feature-object{position:relative;background:#f2eee4 url('assets/paper.webp') repeat;background-size:520px auto}
+.feature-object{position:relative;background:#f2eee4 url('assets/paper.webp') repeat;background-size:512px auto}
 .feature-object img{width:100%;mix-blend-mode:multiply}
 .feature-spec{display:flex;flex-direction:column;gap:16px;align-items:flex-start}
 .feature-spec .lbl{margin:0;max-width:none;width:100%}
@@ -348,11 +353,11 @@ main{padding-left:0}
 /* ================= ST 04 : the heads band ================= */
 .band{margin-top:170px;position:relative}
 .band-inner{max-width:1280px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:1fr;position:relative}
-.band .ph{margin:0 -40px;max-height:560px;overflow:hidden;background:#f2eee4 url('assets/paper.webp') repeat;background-size:520px auto}
+.band .ph{margin:0 -40px;max-height:560px;overflow:hidden;background:#f2eee4 url('assets/paper.webp') repeat;background-size:512px auto}
 .band .ph img{width:100%;object-fit:cover;max-height:560px;mix-blend-mode:multiply}
 .band-chip{
   position:absolute;left:40px;bottom:44px;max-width:430px;
-  border:2px solid #000;border-radius:2px;background:#fff url('assets/paper.webp') repeat;background-size:640px auto;
+  border:2px solid #000;border-radius:2px;background:#fff url('assets/paper.webp') repeat;background-size:512px auto;
   box-shadow:0 4px 0 rgba(26,23,15,.2);padding:22px 24px;
 }
 .band-chip .claim{font-size:clamp(19px,1.8vw,24px);margin-top:12px}
@@ -368,7 +373,7 @@ main{padding-left:0}
 
 /* ================= ST 06 : batch work ================= */
 .custom{max-width:1280px;margin:0 auto;padding:170px 40px 0}
-.custom-plate{margin-top:54px;background:#f2eee4 url('assets/paper.webp') repeat;background-size:520px auto}
+.custom-plate{margin-top:54px;background:#f2eee4 url('assets/paper.webp') repeat;background-size:512px auto}
 .custom-plate img{mix-blend-mode:multiply;width:100%;max-height:520px;object-fit:cover}
 .custom-row{
   display:flex;justify-content:space-between;align-items:center;gap:26px;flex-wrap:wrap;
@@ -414,11 +419,11 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
 .toy-dot.flying{cursor:grab}
 
 /* ================= panels ================= */
-.panel{position:fixed;inset:0;z-index:80;background:#f4f1ea url('assets/paper.webp') repeat;background-size:640px auto;display:grid;grid-template-columns:1.05fr .95fr;
+.panel{position:fixed;inset:0;z-index:80;background:#f4f1ea url('assets/paper.webp') repeat;background-size:512px auto;display:grid;grid-template-columns:1.05fr .95fr;
   opacity:0;pointer-events:none;transform:translateY(16px);
   transition:opacity 240ms var(--ease),transform 480ms var(--spring);overflow:auto}
 .panel.open{opacity:1;pointer-events:auto;transform:none}
-.panel-media{background:#f2eee4 url('assets/paper.webp') repeat;background-size:520px auto;border-right:0;display:flex;align-items:center;justify-content:center;padding:64px;min-height:100vh}
+.panel-media{background:#f2eee4 url('assets/paper.webp') repeat;background-size:512px auto;border-right:0;display:flex;align-items:center;justify-content:center;padding:64px;min-height:100vh}
 .panel-media img{max-height:62vh;width:auto;max-width:82%;mix-blend-mode:multiply}
 .panel-body{padding:120px 68px 68px;display:flex;flex-direction:column;min-height:100vh}
 .panel-body h3{font-family:var(--mono);font-weight:700;font-size:clamp(30px,3.2vw,46px);letter-spacing:-.01em;text-transform:uppercase;line-height:1.06;margin:16px 0 30px}
@@ -431,6 +436,21 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
 .panel-body .obj-link{margin-top:auto;align-self:flex-start}
 .panel-note{margin-top:auto;font-family:var(--mono);font-size:11px;letter-spacing:.07em;color:var(--ink-faint);text-transform:uppercase}
 .p-facts + .panel-note{margin-top:auto}
+/* the spec block : the drawing sheet's own readout grammar, in the room */
+.p-spec{margin-top:34px;border-top:2px solid #000}
+.p-spec .row{display:flex;justify-content:space-between;align-items:baseline;gap:18px;padding:9px 0;border-bottom:1px dashed rgba(26,23,15,.3)}
+.p-spec .row .lk{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+.p-spec .row .lv{font-family:var(--mono);font-size:14px;color:var(--ink-soft);text-align:right}
+.p-spec .row .lv em{font-style:normal;color:var(--yellow-ink);font-weight:700}
+.p-arrives{margin-top:26px}
+.p-arrives .lk{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px}
+.p-arrives p{font-size:15px;color:var(--ink-soft);max-width:44ch;margin:0}
+.p-price{margin-top:26px;display:flex;align-items:baseline;gap:14px}
+.p-price .amount{font-family:var(--mono);font-weight:700;font-size:clamp(24px,2.2vw,32px);letter-spacing:-.01em}
+.p-price .per{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint)}
+.panel-body .cta{margin-top:30px;align-self:flex-start}
+.p-spec + .panel-note,.p-price ~ .panel-note,.panel-body .cta ~ .panel-note{margin-top:30px}
+@media (max-width:900px){.p-spec .row{flex-wrap:wrap;gap:4px}}
 .panel-close{position:fixed;top:18px;right:24px;z-index:85;appearance:none;cursor:pointer;
   border:2px solid #000;background:var(--paper);border-radius:2px;
   font-family:var(--mono);font-size:12px;letter-spacing:.06em;padding:11px 17px;color:var(--ink);
@@ -625,8 +645,87 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
   <div class="hero-pin"><section class="station hero" data-station="ST·00 ARRIVAL">
     <div class="hero-object">
       <div class="holder">
-        <div class="tool-stage" data-toolstage>
-          <img src="assets/drills-alpha.webp" alt="Two high-speed steel twist drills standing point up" data-toolposter>
+        <div class="tool-stage" data-drillstage>
+          <!-- the drill is drawn, not photographed : a coded object can obey
+               the physics. it hangs from above the frame, and your scroll
+               plunges it through the bench rule - the flute helix phases as
+               it bites, which is what a spinning drill looks like side-on -->
+          <svg viewBox="0 0 336 600" role="img" aria-label="A high-speed steel twist drill descending through the bench rule as you scroll">
+            <defs>
+              <linearGradient id="gBody" x1="130" x2="206" y1="0" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#232529"/>
+                <stop offset=".16" stop-color="#4c5057"/>
+                <stop offset=".30" stop-color="#282a2e"/>
+                <stop offset=".62" stop-color="#1e2023"/>
+                <stop offset=".85" stop-color="#3a3d43"/>
+                <stop offset="1" stop-color="#17181b"/>
+              </linearGradient>
+              <linearGradient id="gShade" x1="130" x2="206" y1="0" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#000" stop-opacity=".5"/>
+                <stop offset=".18" stop-color="#fff" stop-opacity=".1"/>
+                <stop offset=".38" stop-color="#fff" stop-opacity="0"/>
+                <stop offset=".8" stop-color="#000" stop-opacity=".28"/>
+                <stop offset="1" stop-color="#000" stop-opacity=".55"/>
+              </linearGradient>
+              <linearGradient id="gPoint" x1="130" x2="206" y1="0" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#8e939b"/>
+                <stop offset=".5" stop-color="#c8ccd2"/>
+                <stop offset=".52" stop-color="#7d828a"/>
+                <stop offset="1" stop-color="#565b62"/>
+              </linearGradient>
+              <clipPath id="benchClip"><rect x="0" y="0" width="336" height="505"/></clipPath>
+              <clipPath id="fluteClip"><rect x="130" y="90" width="76" height="320"/></clipPath>
+              <pattern id="benchTicks" width="12" height="7" patternUnits="userSpaceOnUse">
+                <rect x="0" y="0" width="1.5" height="7" fill="#1a170f"/>
+              </pattern>
+            </defs>
+            <g clip-path="url(#benchClip)">
+              <g id="drill">
+                <rect x="130" y="6" width="76" height="84" fill="url(#gBody)"/>
+                <rect x="130" y="90" width="76" height="320" fill="url(#gBody)"/>
+                <!-- the shank's machined end face : the drill is a complete
+                     object, not a cropped one -->
+                <ellipse cx="168" cy="6" rx="38" ry="5" fill="#3d4046"/>
+                <ellipse cx="168" cy="6" rx="38" ry="5" fill="url(#gShade)" opacity=".5"/>
+                <path d="M130,6 A38,5 0 0 1 206,6" fill="none" stroke="#9298a1" stroke-opacity=".8" stroke-width="1.3"/>
+                <g clip-path="url(#fluteClip)"><g id="helix">
+                  <polygon points="130,79 206,42 206,57 130,94" fill="#0c0d0f" fill-opacity=".82"/>
+                  <polygon points="130,95 206,58 206,60.5 130,97.5" fill="#c8cdd6" fill-opacity=".35"/>
+                  <polygon points="130,127 206,90 206,105 130,142" fill="#0c0d0f" fill-opacity=".82"/>
+                  <polygon points="130,143 206,106 206,108.5 130,145.5" fill="#c8cdd6" fill-opacity=".35"/>
+                  <polygon points="130,175 206,138 206,153 130,190" fill="#0c0d0f" fill-opacity=".82"/>
+                  <polygon points="130,191 206,154 206,156.5 130,193.5" fill="#c8cdd6" fill-opacity=".35"/>
+                  <polygon points="130,223 206,186 206,201 130,238" fill="#0c0d0f" fill-opacity=".82"/>
+                  <polygon points="130,239 206,202 206,204.5 130,241.5" fill="#c8cdd6" fill-opacity=".35"/>
+                  <polygon points="130,271 206,234 206,249 130,286" fill="#0c0d0f" fill-opacity=".82"/>
+                  <polygon points="130,287 206,250 206,252.5 130,289.5" fill="#c8cdd6" fill-opacity=".35"/>
+                  <polygon points="130,319 206,282 206,297 130,334" fill="#0c0d0f" fill-opacity=".82"/>
+                  <polygon points="130,335 206,298 206,300.5 130,337.5" fill="#c8cdd6" fill-opacity=".35"/>
+                  <polygon points="130,367 206,330 206,345 130,382" fill="#0c0d0f" fill-opacity=".82"/>
+                  <polygon points="130,383 206,346 206,348.5 130,385.5" fill="#c8cdd6" fill-opacity=".35"/>
+                  <polygon points="130,415 206,378 206,393 130,430" fill="#0c0d0f" fill-opacity=".82"/>
+                  <polygon points="130,431 206,394 206,396.5 130,433.5" fill="#c8cdd6" fill-opacity=".35"/>
+                  <polygon points="130,463 206,426 206,441 130,478" fill="#0c0d0f" fill-opacity=".82"/>
+                  <polygon points="130,479 206,442 206,444.5 130,481.5" fill="#c8cdd6" fill-opacity=".35"/>
+                  <polygon points="130,511 206,474 206,489 130,526" fill="#0c0d0f" fill-opacity=".82"/>
+                  <polygon points="130,527 206,490 206,492.5 130,529.5" fill="#c8cdd6" fill-opacity=".35"/>
+                </g></g>
+                <rect x="130.5" y="90" width="2" height="320" fill="#bec4cd" fill-opacity=".5"/>
+                <rect x="203.5" y="90" width="2" height="320" fill="#bec4cd" fill-opacity=".68"/>
+                <rect x="130" y="408.5" width="76" height="1.5" fill="#e6eaf0" fill-opacity=".5"/>
+                <polygon points="130,410 206,410 168,433" fill="url(#gPoint)"/>
+                <polygon points="130,410 168,410 168,433" fill="#000" fill-opacity=".16"/>
+                <line x1="168" y1="410" x2="168" y2="433" stroke="#f0f3f7" stroke-opacity=".75" stroke-width="1.2"/>
+                <rect x="130" y="6" width="76" height="404" fill="url(#gShade)"/>
+                <polygon points="130,410 206,410 168,433" fill="url(#gShade)" opacity=".7"/>
+                <g id="etch"><text transform="translate(163,16) rotate(90)">R&amp;S &#183; HSS &#183; &#216;9.5</text></g>
+              </g>
+            </g>
+            <!-- the bench : the page's own rule, seen edge-on -->
+            <rect x="8" y="504" width="320" height="2" fill="#1a170f"/>
+            <rect x="8" y="506" width="320" height="7" fill="url(#benchTicks)" opacity=".4"/>
+            <rect id="bore" x="168" y="502" width="0" height="6" rx="2" fill="#0c0c0d"/>
+          </svg>
           <!-- the poster documents itself : callouts ink in only once you scroll,
                staged to the descent, in the sheets' own callout grammar -->
           <div class="hero-callout a" data-hcalla>
@@ -650,9 +749,9 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
       </h1>
     </div>
     <div class="hero-return">
-      <span class="lk">Twist drills · HSS</span>
+      <span class="lk">Twist drill · HSS · point [118&deg;]</span>
       <span class="rule"></span>
-      <span class="lv" style="color:var(--yellow-ink)"><b>POINT [118&deg;] · GROUND HERE</b></span>
+      <span class="lv" style="color:var(--yellow-ink)"><b data-drillreadout>PLUNGE 0% · GROUND HERE</b></span>
     </div>
   </section></div>
 
@@ -1073,8 +1172,21 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
     <div class="p-facts">
       <span class="f">Electroplated diamond grit on ground steel shanks</span>
       <span class="f">Grit only where it cuts; the shank stays clean</span>
-      <span class="f">Sold as a set of three</span>
+      <span class="f">One plating bath per batch, so the three cut alike</span>
     </div>
+    <div class="p-spec" aria-label="Specifications, illustrative">
+      <div class="row"><span class="lk">Shank</span><span class="lv">&#216;3.2 mm &#183; ground to <em>-0 / -0.008</em></span></div>
+      <div class="row"><span class="lk">Heads</span><span class="lv">ball &#183; flame &#183; taper</span></div>
+      <div class="row"><span class="lk">Grit</span><span class="lv">D126 &#183; single-layer electroplate</span></div>
+      <div class="row"><span class="lk">Runout</span><span class="lv">&le;0.02 mm at the collet</span></div>
+      <div class="row"><span class="lk">Works on</span><span class="lv">hard steel &#183; glass &#183; stone &#183; carbide</span></div>
+    </div>
+    <div class="p-arrives">
+      <span class="lk">In the tube</span>
+      <p>Three burrs in a waxed-paper roll, and the grind card for the batch they came from &mdash; wheel, date, and the hand that checked them.</p>
+    </div>
+    <div class="p-price"><span class="amount">$48</span><span class="per">set of three &#183; figure illustrative</span></div>
+    <button class="cta" data-open-panel="custom">Order the set <span class="go">&rarr;</span></button>
     <p class="panel-note">A design study · figures illustrative</p>
   </div>
 </div>
@@ -1087,8 +1199,21 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
     <div class="p-facts">
       <span class="f">Indexable carbide inserts on steel bodies</span>
       <span class="f">A worn edge is a part you replace, not a head you throw away</span>
-      <span class="f">Arbor sizes to fit common spindles</span>
+      <span class="f">Every pocket seat is cut here, then checked against its insert</span>
     </div>
+    <div class="p-spec" aria-label="Specifications, illustrative">
+      <div class="row"><span class="lk">Bodies</span><span class="lv">&#216;50 &#183; &#216;63 &#183; &#216;80 mm</span></div>
+      <div class="row"><span class="lk">Inserts</span><span class="lv">APKT-16 &#183; four pockets to eight</span></div>
+      <div class="row"><span class="lk">Arbor</span><span class="lv">22 mm &#183; fits common spindles</span></div>
+      <div class="row"><span class="lk">Seat check</span><span class="lv">every pocket &#183; <em>&le;0.01 mm</em> insert-to-insert</span></div>
+      <div class="row"><span class="lk">Balance</span><span class="lv">G6.3 at 8,000 rpm</span></div>
+    </div>
+    <div class="p-arrives">
+      <span class="lk">In the box</span>
+      <p>The head with a first set of inserts seated, the torque key that fits its screws, and the pocket map for reordering edges.</p>
+    </div>
+    <div class="p-price"><span class="amount">$184</span><span class="per">from &#183; &#216;50 body &#183; figure illustrative</span></div>
+    <button class="cta" data-open-panel="custom">Order a head <span class="go">&rarr;</span></button>
     <p class="panel-note">A design study · figures illustrative</p>
   </div>
 </div>
@@ -1099,10 +1224,23 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
     <span class="tag"><span class="idx">OBJ·03</span> · GROUND HSS</span>
     <h3>Twist drills</h3>
     <div class="p-facts">
-      <span class="f">Ground high-speed steel</span>
+      <span class="f">Ground high-speed steel, black-oxide body, bright ground point</span>
       <span class="f">Point angles finished on the wheel, checked by eye</span>
-      <span class="f">Sold in matched pairs</span>
+      <span class="f">Sold in matched pairs &mdash; two drills off the same wheel dressing</span>
     </div>
+    <div class="p-spec" aria-label="Specifications, illustrative">
+      <div class="row"><span class="lk">Sizes</span><span class="lv">&#216;3 &ndash; &#216;13 mm &#183; jobber length</span></div>
+      <div class="row"><span class="lk">Point</span><span class="lv"><em>118&deg;</em> &#183; split on &#216;6 and up</span></div>
+      <div class="row"><span class="lk">Steel</span><span class="lv">M2 HSS &#183; hardened 63&ndash;65 HRC</span></div>
+      <div class="row"><span class="lk">Lips</span><span class="lv">matched within 0.05 mm &mdash; a drill that walks was ground wrong</span></div>
+      <div class="row"><span class="lk">Finish</span><span class="lv">oxide flutes &#183; polished margins</span></div>
+    </div>
+    <div class="p-arrives">
+      <span class="lk">In the tube</span>
+      <p>The pair standing in a drilled hardwood block &mdash; drilled with them, which is the test they pass to leave.</p>
+    </div>
+    <div class="p-price"><span class="amount">$26</span><span class="per">matched pair &#183; &#216;9.5 &#183; figure illustrative</span></div>
+    <button class="cta" data-open-panel="custom">Order a pair <span class="go">&rarr;</span></button>
     <p class="panel-note">A design study · figures illustrative</p>
   </div>
 </div>
@@ -1113,9 +1251,20 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
     <span class="tag">BATCH GRINDING</span>
     <h3>Your drawing, our wheels</h3>
     <div class="p-facts">
-      <span class="f">Fifty-piece minimum per geometry</span>
       <span class="f">Send a print, or we draw it with you</span>
-      <span class="f">Quoted within a day, first article before the run</span>
+      <span class="f">First article ships before the run &mdash; approve the one, get the fifty</span>
+      <span class="f">Batches leave in order of arrival; nobody buys a place in line</span>
+    </div>
+    <div class="p-spec" aria-label="How a batch runs, figures illustrative">
+      <div class="row"><span class="lk">Minimum</span><span class="lv">50 pieces per geometry</span></div>
+      <div class="row"><span class="lk">Quote</span><span class="lv">within <em>one working day</em></span></div>
+      <div class="row"><span class="lk">Tolerance</span><span class="lv">to your print &#183; &plusmn;0.005 mm where it earns its keep</span></div>
+      <div class="row"><span class="lk">First article</span><span class="lv">measured &#183; photographed &#183; shipped for approval</span></div>
+      <div class="row"><span class="lk">The run</span><span class="lv">2&ndash;3 weeks after your yes</span></div>
+    </div>
+    <div class="p-arrives">
+      <span class="lk">What we need</span>
+      <p>A drawing (any format a shop can read), the count, and the deadline that is actually real. We will tell you plainly if the wheels can't hold your number.</p>
     </div>
     <p class="panel-note">This is a design study; the order path is not real</p>
   </div>
@@ -1127,24 +1276,33 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
   'use strict';
   var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ===== the arrival : a still tool occludes the headline; your scroll
-     stages the sheet-grammar callouts down the drills, then everything
-     dissolves before the fixed chips can collide with it ===== */
+  /* ===== the signature : your scroll plunges the drill =====
+     the pen mechanic, verbatim: the hero holds still under a sticky pin,
+     display chases scroll at the air-cushion rate, and the object obeys
+     its own physics - descent is position-locked, the spin is the flute
+     helix phasing (drawn metal can rotate; photographed metal can only
+     tumble), and the shank etch blurs away once the spindle winds up. */
   (function(){
-    var stage=document.querySelector('[data-toolstage]');
+    var stage=document.querySelector('[data-drillstage]');
     var wrap=document.querySelector('.hero-pin');
     if(!stage||!wrap)return;
-    var img=stage.querySelector('[data-toolposter]');
+    var svg=stage.querySelector('svg');
+    var drill=stage.querySelector('#drill');
+    var helix=stage.querySelector('#helix');
+    var etch=stage.querySelector('#etch');
+    var bore=stage.querySelector('#bore');
+    var readout=document.querySelector('[data-drillreadout]');
     var heroObj=document.querySelector('.hero-object');
     var heroRet=document.querySelector('.hero-return');
     var callA=document.querySelector('[data-hcalla]');
     var callB=document.querySelector('[data-hcallb]');
-    /* leaders sized from the poster's real geometry so the rings land ON the
-       metal: the right drill's body sits at 76% of the frame, the left
-       drill's at 30% (measured from the processed image's alpha mask) */
+    /* leaders sized from the drawing's real geometry so the rings land ON
+       the metal: the body spans x 130-206 of the 336 frame, so the right
+       edge sits at 61.3% and the left edge at 38.7% - known, not measured,
+       because we drew it */
     function sizeCallouts(){
       if(!callA||!callB)return;
-      var cr=img.getBoundingClientRect();
+      var cr=svg.getBoundingClientRect();
       if(cr.width<10)return;
       /* the flute callout must live in clear air BELOW the headline at every
          window size - measured, never assumed */
@@ -1156,48 +1314,52 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
       }
       var la=callA.querySelector('.hc-line'),lb=callB.querySelector('.hc-line');
       var ar=callA.getBoundingClientRect(),br=callB.getBoundingClientRect();
-      var wA=Math.round(ar.left-8-(cr.left+cr.width*0.76));
-      var wB=Math.round((cr.left+cr.width*0.30)-(br.right+8));
+      var wA=Math.round(ar.left-8-(cr.left+cr.width*0.613));
+      var wB=Math.round((cr.left+cr.width*0.387)-(br.right+8));
       if(wA>20)la.style.width=wA+'px';
       if(wB>20)lb.style.width=wB+'px';
     }
     window.addEventListener('load',sizeCallouts);
     window.addEventListener('resize',sizeCallouts);
     setTimeout(sizeCallouts,700);
-    if(reduced){if(callA)callA.classList.add('on');if(callB)callB.classList.add('on');return;}
-    /* the page scrolls normally; the drill DESCENDS through the viewport,
-       position easing toward target at the air-cushion rate, and spins up
-       once it has bitten - a drill going down is a drill drilling */
+    if(reduced){
+      if(callA)callA.classList.add('on');
+      if(callB)callB.classList.add('on');
+      if(drill)drill.setAttribute('transform','translate(0,60)');
+      if(etch)etch.setAttribute('opacity','0');
+      return;
+    }
     var pos=0,target=0;
-    function retarget(){
+    var TRAVEL=400;                       /* svg units of descent, tip 433 -> through the 505 bench */
+    var PERIOD=48;                        /* one flute groove per 48 units */
+    function frame(){
       var r=wrap.getBoundingClientRect();
       var total=r.height-window.innerHeight;
       target=total>0?Math.min(1,Math.max(0,-r.top/total)):0;
-      return r;
-    }
-    function frame(){
-      var r=retarget();
-      pos+=(target-pos)*0.085;           /* the air-cushion rate, page-wide */
-      var vh=window.innerHeight;
-      var total=Math.max(1,r.height-vh);
-      var mobile=window.innerWidth<=900;
-      /* travel beats the scroll, so the drill nets DOWNWARD in the viewport */
-      var travel=total+vh*(mobile?0.26:0.5);
-      stage.style.transform='translate3d(0,'+(pos*travel).toFixed(1)+'px,0)';
-      /* the bite : the spin eases in from the first descent - barely turning
-         while the callouts letter, winding up as it drills down and away */
-      var spin=Math.pow(pos,1.7);
-      img.style.transform='rotate('+(spin*(mobile?300:420)).toFixed(2)+'deg)';
-      /* the poster documents itself early, while the metal is still upright */
-      if(callA)callA.classList.toggle('on',pos>0.04&&pos<0.34);
-      if(callB)callB.classList.toggle('on',pos>0.13&&pos<0.34);
-      /* quiet exit : the drill dissolves as its descent completes, gone
-         before ST-01's claim arrives - it drills INTO the page, not over it */
-      var vanish=1-Math.min(1,Math.max(0,(pos-0.8)/0.18));
-      var exit=Math.min(1,Math.max(0,r.bottom/(vh*0.55)));
-      var op=Math.min(exit,vanish);
-      if(heroObj)heroObj.style.opacity=op;
-      if(heroRet)heroRet.style.opacity=op;
+      pos+=(target-pos)*0.085;            /* the air cushion */
+      var ty=pos*TRAVEL;
+      drill.setAttribute('transform','translate(0,'+ty.toFixed(2)+')');
+      /* the bite : barely turning while the callouts letter, winding up as
+         it drills down - the helix phase IS the rotation, position-locked
+         so releasing mid-plunge lets the air win */
+      var phase=Math.pow(pos,1.7)*PERIOD*10;
+      helix.setAttribute('transform','translate(0,'+(-(phase%PERIOD)).toFixed(2)+')');
+      /* readable at rest, a blur at speed : the etch fades as the spindle winds up */
+      etch.setAttribute('opacity',Math.max(0,1-pos*6).toFixed(2));
+      /* the bore opens the moment the tip crosses the bench rule */
+      var bw=84*Math.min(1,Math.max(0,(433+ty-500)/12));
+      bore.setAttribute('x',(168-bw/2).toFixed(1));
+      bore.setAttribute('width',bw.toFixed(1));
+      /* the drawing documents itself : flutes named once the descent is
+         underway, the margin as the body rides the bore */
+      if(callA)callA.classList.toggle('on',pos>0.06&&pos<0.5);
+      if(callB)callB.classList.toggle('on',pos>0.52&&pos<0.85);
+      if(readout)readout.textContent='PLUNGE '+Math.round(pos*100)+'% · GROUND HERE';
+      /* quiet exit : everything dissolves as the pin releases, gone before
+         ST-01's claim arrives - it drills INTO the page, not over it */
+      var exit=Math.min(1,Math.max(0,r.bottom/(window.innerHeight*0.55)));
+      if(heroObj)heroObj.style.opacity=exit;
+      if(heroRet)heroRet.style.opacity=exit;
       requestAnimationFrame(frame);
     }
     frame();
@@ -1500,20 +1662,30 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
      vendored locally (assets/motion.min.js). CSS transitions stay as fallback;
      when Motion is present we disable them and drive the spring ourselves. */
   var M=window.Motion&&window.Motion.animate?window.Motion:null;
+  /* a close's WAAPI opacity animation holds fill:both and can outlive the
+     close, silently overriding every later inline opacity - the room then
+     reopens as a ghost. kill stale animations before any new spring. */
+  function clearAnims(el){
+    if(el.getAnimations){el.getAnimations().forEach(function(a){a.cancel();});}
+  }
   function springOpen(el,fromY,skipFade){
     if(!M||reduced)return;
+    clearAnims(el);
     el.style.transition='none';
     if(skipFade){
       /* the facing pass is doing the reveal : the material must be SOLID
-         while the cutter crosses it, or the cut reads as a plain fade */
+         while the cutter crosses it, or the cut reads as a plain fade.
+         opacity goes through Motion (near-instant) - a bare inline write
+         gets stomped by Motion's remembered last value on the next frame */
       el.style.opacity='1';
-      M.animate(el,{y:0},{type:'spring',stiffness:170,damping:20});
+      M.animate(el,{y:0,opacity:1},{type:'spring',stiffness:170,damping:20,opacity:{duration:.02}});
       return;
     }
     M.animate(el,{opacity:1,y:0},{type:'spring',stiffness:170,damping:20,opacity:{duration:.19,ease:'easeOut'}});
   }
   function springClose(el,toY){
     if(!M||reduced)return;
+    clearAnims(el);
     el.style.transition='none';
     M.animate(el,{opacity:0,y:toY},{duration:.18,ease:'easeOut'});
   }
@@ -1630,7 +1802,11 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
   var closeBtn=document.querySelector('.panel-close');
   var lastFocus=null;
   function openPanel(id){
-    lastFocus=document.activeElement;
+    /* a panel can hand off to another (order CTAs) : close the one that is
+       up without returning focus, and keep the original resting place */
+    var already=document.querySelector('.panel.open');
+    if(already){springClose(already,10);already.classList.remove('open');}
+    else{lastFocus=document.activeElement;}
     closeAll();closeSheet();
     var p=document.getElementById('panel-'+id);
     if(!p)return;
