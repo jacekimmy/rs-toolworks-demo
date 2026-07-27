@@ -240,9 +240,13 @@ main{padding-left:0}
 .hero h1 .row.ind{padding-left:1.2ch}
 .hero-line{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--ink-soft);text-transform:uppercase}
 
-/* ===== the arrival poster : scroll walks you down the drills ===== */
-.hero-pin{height:220vh;position:relative}
-.hero-pin .hero{position:sticky;top:0;height:100svh;margin:0 auto;overflow:hidden}
+/* ===== the arrival poster : the page scrolls normally and the drill
+   DESCENDS through it, spinning up as it bites - drilling into the page.
+   translateY rides the damped chase (the air-cushion rate, page-wide) ===== */
+.hero-pin{height:190vh;position:relative}
+.hero-pin .hero{position:relative;height:100svh;margin:0 auto}
+.tool-stage{will-change:transform}
+.tool-stage img{will-change:transform;transform-origin:50% 50%}
 @media (max-width:900px){
   .hero-pin{height:150vh}
   .hero-state{left:22px;right:22px;top:13vh}
@@ -437,9 +441,12 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
 .panel-close:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(26,23,15,.18)}
 
 /* ================= the sheets ================= */
-.sheet-row{display:grid;grid-template-columns:1.35fr 1fr;gap:26px;align-items:start;max-width:1280px;margin:96px auto 0;padding:0 40px}
+.sheet-row{display:grid;grid-template-columns:1.5fr 1fr;gap:26px;align-items:start;max-width:1280px;margin:96px auto 0;padding:0 40px;width:100%}
 .sheet-row .drawing-sheet{margin:0;padding:0;max-width:none}
-.feature .drawing-sheet{max-width:880px;margin-top:72px}
+/* inside the centered drills column the row must claim the full rail -
+   without this the SVGs collapse to their 300px default intrinsic size */
+.drills .sheet-row{padding:0}
+.feature .drawing-sheet{max-width:1060px;margin-top:72px}
 @media (max-width:900px){.sheet-row{grid-template-columns:1fr;gap:32px;margin:56px auto 0;padding:0 22px}}
 .drawing-sheet{max-width:1200px;margin:64px auto 0;padding:0 40px}
 .drawing-sheet svg{width:100%;height:auto;display:block}
@@ -463,7 +470,10 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
     appearance:none;background:var(--ink);color:var(--paper);border:2px solid #000;border-radius:2px;
     font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;padding:12px 15px;
     box-shadow:0 3px 0 rgba(26,23,15,.18);
+    transition:transform 80ms var(--ease),box-shadow 80ms var(--ease);
   }
+  /* press-ack : the chip seats like a button on a machine */
+  .menu-chip:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(26,23,15,.18)}
   .msheet{
     display:block;position:fixed;inset:0;z-index:71;background:var(--paper);
     padding:78px 22px 30px;overflow:auto;
@@ -471,6 +481,13 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
     transition:opacity 210ms var(--ease),transform 460ms var(--spring);
   }
   .msheet.open{opacity:1;pointer-events:auto;transform:none}
+  /* the sheet's contents rise as one staged group when the menu opens */
+  .msheet .ms-group,.msheet .ms-card{opacity:0;transform:translateY(14px);
+    transition:opacity 280ms var(--ease),transform 420ms var(--ease)}
+  .msheet.open .ms-group,.msheet.open .ms-card{opacity:1;transform:none}
+  .msheet.open .ms-group:nth-of-type(1){transition-delay:50ms}
+  .msheet.open .ms-group:nth-of-type(2){transition-delay:130ms}
+  .msheet.open .ms-card{transition-delay:210ms}
   .ms-group{border-top:1.5px solid var(--line);padding:18px 0}
   .ms-group .tag{margin-bottom:10px;display:block}
   .ms-link{
@@ -478,7 +495,10 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
     background:none;border:0;cursor:pointer;text-decoration:none;text-align:left;
     font-family:var(--mono);font-weight:700;font-size:21px;letter-spacing:-.01em;text-transform:uppercase;color:var(--ink);
     padding:10px 0;
+    transition:transform 100ms var(--ease),color 100ms var(--ease);
   }
+  /* press-ack : the link nudges along its feed direction, under 100ms */
+  .ms-link:active{transform:translateX(6px);color:var(--yellow-ink)}
   .ms-link small{font-family:var(--mono);font-size:9.5px;color:var(--ink-faint);letter-spacing:.1em;font-weight:400}
   .ms-card{margin-top:24px;border:2px solid #000;border-radius:2px;overflow:hidden;background:var(--paper-deep)}
   .ms-card img{width:100%;aspect-ratio:1.6;object-fit:cover;mix-blend-mode:multiply}
@@ -935,69 +955,69 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
 </svg>
       </div>
       <div class="drawing-sheet" aria-label="Speeds and feeds arithmetic worked for one drill">
-<svg viewBox="0 0 980 560" xmlns="http://www.w3.org/2000/svg" font-family="Space Mono, monospace">
-<rect x="8" y="8" width="964" height="544" fill="none" stroke="#000" stroke-width="1"/>
+<svg viewBox="0 0 620 900" xmlns="http://www.w3.org/2000/svg" font-family="Space Mono, monospace">
+<rect x="8" y="8" width="604" height="884" fill="none" stroke="#000" stroke-width="1"/>
 <text x="44" y="52" font-size="19" font-weight="bold">THE ARITHMETIC<tspan fill="#D8A800">.</tspan></text>
 <text x="44" y="74" font-size="11" opacity="0.8">ONE DRILL, WORKED OUT IN ORDINARY HANDBOOK NUMBERS</text>
-<text x="44" y="122" font-size="13" font-weight="bold">THE SPEED</text>
-<line x1="44" y1="132" x2="470" y2="132" stroke="#000" stroke-width="2"/>
-<text x="44" y="158" font-size="11.5">CUTTING SPEED, HSS IN MILD STEEL</text>
-<text x="470" y="158" font-size="11.5" text-anchor="end">[25]m/min</text>
-<line x1="44" y1="166" x2="470" y2="166" stroke="#000" stroke-width="1"/>
-<text x="44" y="188" font-size="11.5">THE DRILL</text>
-<text x="470" y="188" font-size="11.5" text-anchor="end">&#216;[6.0]mm</text>
-<line x1="44" y1="196" x2="470" y2="196" stroke="#000" stroke-width="1"/>
-<text x="44" y="218" font-size="11.5">ITS CIRCUMFERENCE</text>
-<text x="470" y="218" font-size="11.5" text-anchor="end">[18.85]mm</text>
-<line x1="44" y1="226" x2="470" y2="226" stroke="#000" stroke-width="1"/>
-<text x="44" y="248" font-size="11.5">SPINDLE = 25,000 &#247; 18.85</text>
-<text x="470" y="248" font-size="11.5" text-anchor="end">[1,326]RPM</text>
-<line x1="44" y1="256" x2="470" y2="256" stroke="#000" stroke-width="1"/>
-<text x="44" y="278" font-size="11.5">ROUNDED TO THE MACHINE&#8217;S PULLEY</text>
-<text x="470" y="278" font-size="11.5" text-anchor="end">[1,200]RPM</text>
-<line x1="44" y1="286" x2="470" y2="286" stroke="#000" stroke-width="1"/>
-<text x="44" y="326" font-size="13" font-weight="bold">THE FEED</text>
-<line x1="44" y1="336" x2="470" y2="336" stroke="#000" stroke-width="2"/>
-<text x="44" y="362" font-size="11.5">FEED, PER REVOLUTION</text>
-<text x="470" y="362" font-size="11.5" text-anchor="end">[0.10]mm</text>
-<line x1="44" y1="370" x2="470" y2="370" stroke="#000" stroke-width="1"/>
-<text x="44" y="392" font-size="11.5">PENETRATION = 1,200 &#215; 0.10</text>
-<text x="470" y="392" font-size="11.5" text-anchor="end">[120]mm/min</text>
-<line x1="44" y1="400" x2="470" y2="400" stroke="#000" stroke-width="1"/>
-<text x="44" y="422" font-size="11.5">A [20]mm DEEP HOLE, THEREFORE</text>
-<text x="470" y="422" font-size="11.5" text-anchor="end">[10]SECONDS</text>
-<line x1="44" y1="430" x2="470" y2="430" stroke="#000" stroke-width="1"/>
-<text x="44" y="468" font-size="14" font-weight="bold">TEN SECONDS OF CUTTING</text>
-<text x="470" y="468" font-size="14" font-weight="bold" text-anchor="end">HOURS OF GRINDING FIRST</text>
-<text x="540" y="122" font-size="13" font-weight="bold">THE EDGE &#183; WHEN TO SHARPEN</text>
-<line x1="540" y1="132" x2="936" y2="132" stroke="#000" stroke-width="2"/>
-<text x="540" y="158" font-size="11.5">CHIPS COME OFF STRAW-COLOURED</text>
-<text x="936" y="158" font-size="11.5" text-anchor="end">KEEP CUTTING</text>
-<line x1="540" y1="166" x2="936" y2="166" stroke="#000" stroke-width="1"/>
-<text x="540" y="188" font-size="11.5">CHIPS COME OFF BLUE</text>
-<text x="936" y="188" font-size="11.5" text-anchor="end">TOO HOT &#183; SLOW DOWN</text>
-<line x1="540" y1="196" x2="936" y2="196" stroke="#000" stroke-width="1"/>
-<text x="540" y="218" font-size="11.5">THE DRILL SQUEALS AND RUBS</text>
-<text x="936" y="218" font-size="11.5" text-anchor="end">SHARPEN TODAY</text>
-<line x1="540" y1="226" x2="936" y2="226" stroke="#000" stroke-width="1"/>
-<text x="540" y="248" font-size="11.5">THE HOLE WANDERS OFF CENTRE</text>
-<text x="936" y="248" font-size="11.5" text-anchor="end">THE POINT IS OFF &#183; REGRIND</text>
-<line x1="540" y1="256" x2="936" y2="256" stroke="#000" stroke-width="1"/>
-<text x="540" y="278" font-size="11.5">YOU PRESS HARDER THAN YESTERDAY</text>
-<text x="936" y="278" font-size="11.5" text-anchor="end">THAT IS THE TELL</text>
-<line x1="540" y1="286" x2="936" y2="286" stroke="#000" stroke-width="1"/>
-<text x="540" y="326" font-size="13" font-weight="bold">THE RULE OF THE SHOP</text>
-<line x1="540" y1="336" x2="936" y2="336" stroke="#000" stroke-width="2"/>
-<text x="540" y="362" font-size="11.5">A SHARP TOOL IS CHEAPER THAN A FAST ONE &#183; <tspan font-weight="bold">ALWAYS</tspan></text>
-<rect x="540" y="440" width="396" height="94" fill="#f7f4ec" stroke="#000" stroke-width="2"/>
-<text x="550" y="460" font-size="13.5" font-weight="bold">TWIST DRILLS &#183; PAIRS</text>
-<text x="926" y="460" font-size="10" text-anchor="end">SHT&#183;05B</text>
-<line x1="540" y1="470" x2="936" y2="470" stroke="#000" stroke-width="1"/>
-<text x="550" y="489" font-size="10">HANDBOOK ARITHMETIC &#183; WORKED FOR ONE SIZE</text>
-<text x="926" y="489" font-size="10" text-anchor="end">R&amp;S TOOL WORKS</text>
-<line x1="540" y1="498" x2="936" y2="498" stroke="#000" stroke-width="1"/>
-<text x="550" y="519" font-size="10" font-weight="bold">ILLUSTRATIVE FIGURES &#183; THIS SITE IS A DESIGN STUDY</text>
-<line x1="800" y1="440" x2="800" y2="498" stroke="#000" stroke-width="1"/>
+<text x="44" y="116" font-size="13" font-weight="bold">THE SPEED</text>
+<line x1="44" y1="126" x2="576" y2="126" stroke="#000" stroke-width="2"/>
+<text x="44" y="152" font-size="11.5">CUTTING SPEED, HSS IN MILD STEEL</text>
+<text x="576" y="152" font-size="11.5" text-anchor="end">[25]m/min</text>
+<line x1="44" y1="160" x2="576" y2="160" stroke="#000" stroke-width="1"/>
+<text x="44" y="182" font-size="11.5">THE DRILL</text>
+<text x="576" y="182" font-size="11.5" text-anchor="end">&#216;[6.0]mm</text>
+<line x1="44" y1="190" x2="576" y2="190" stroke="#000" stroke-width="1"/>
+<text x="44" y="212" font-size="11.5">ITS CIRCUMFERENCE</text>
+<text x="576" y="212" font-size="11.5" text-anchor="end">[18.85]mm</text>
+<line x1="44" y1="220" x2="576" y2="220" stroke="#000" stroke-width="1"/>
+<text x="44" y="242" font-size="11.5">SPINDLE = 25,000 &#247; 18.85</text>
+<text x="576" y="242" font-size="11.5" text-anchor="end">[1,326]RPM</text>
+<line x1="44" y1="250" x2="576" y2="250" stroke="#000" stroke-width="1"/>
+<text x="44" y="272" font-size="11.5">ROUNDED TO THE MACHINE&#8217;S PULLEY</text>
+<text x="576" y="272" font-size="11.5" text-anchor="end">[1,200]RPM</text>
+<line x1="44" y1="280" x2="576" y2="280" stroke="#000" stroke-width="1"/>
+<text x="44" y="318" font-size="13" font-weight="bold">THE FEED</text>
+<line x1="44" y1="328" x2="576" y2="328" stroke="#000" stroke-width="2"/>
+<text x="44" y="354" font-size="11.5">FEED, PER REVOLUTION</text>
+<text x="576" y="354" font-size="11.5" text-anchor="end">[0.10]mm</text>
+<line x1="44" y1="362" x2="576" y2="362" stroke="#000" stroke-width="1"/>
+<text x="44" y="384" font-size="11.5">PENETRATION = 1,200 &#215; 0.10</text>
+<text x="576" y="384" font-size="11.5" text-anchor="end">[120]mm/min</text>
+<line x1="44" y1="392" x2="576" y2="392" stroke="#000" stroke-width="1"/>
+<text x="44" y="414" font-size="11.5">A [20]mm DEEP HOLE, THEREFORE</text>
+<text x="576" y="414" font-size="11.5" text-anchor="end">[10]SECONDS</text>
+<line x1="44" y1="422" x2="576" y2="422" stroke="#000" stroke-width="1"/>
+<text x="44" y="458" font-size="14" font-weight="bold">TEN SECONDS OF CUTTING</text>
+<text x="576" y="458" font-size="14" font-weight="bold" text-anchor="end">HOURS OF GRINDING FIRST</text>
+<text x="44" y="496" font-size="13" font-weight="bold">THE EDGE &#183; WHEN TO SHARPEN</text>
+<line x1="44" y1="506" x2="576" y2="506" stroke="#000" stroke-width="2"/>
+<text x="44" y="532" font-size="11.5">CHIPS COME OFF STRAW-COLOURED</text>
+<text x="576" y="532" font-size="11.5" text-anchor="end">KEEP CUTTING</text>
+<line x1="44" y1="540" x2="576" y2="540" stroke="#000" stroke-width="1"/>
+<text x="44" y="562" font-size="11.5">CHIPS COME OFF BLUE</text>
+<text x="576" y="562" font-size="11.5" text-anchor="end">TOO HOT &#183; SLOW DOWN</text>
+<line x1="44" y1="570" x2="576" y2="570" stroke="#000" stroke-width="1"/>
+<text x="44" y="592" font-size="11.5">THE DRILL SQUEALS AND RUBS</text>
+<text x="576" y="592" font-size="11.5" text-anchor="end">SHARPEN TODAY</text>
+<line x1="44" y1="600" x2="576" y2="600" stroke="#000" stroke-width="1"/>
+<text x="44" y="622" font-size="11.5">THE HOLE WANDERS OFF CENTRE</text>
+<text x="576" y="622" font-size="11.5" text-anchor="end">THE POINT IS OFF &#183; REGRIND</text>
+<line x1="44" y1="630" x2="576" y2="630" stroke="#000" stroke-width="1"/>
+<text x="44" y="652" font-size="11.5">YOU PRESS HARDER THAN YESTERDAY</text>
+<text x="576" y="652" font-size="11.5" text-anchor="end">THAT IS THE TELL</text>
+<line x1="44" y1="660" x2="576" y2="660" stroke="#000" stroke-width="1"/>
+<text x="44" y="698" font-size="13" font-weight="bold">THE RULE OF THE SHOP</text>
+<line x1="44" y1="708" x2="576" y2="708" stroke="#000" stroke-width="2"/>
+<text x="44" y="734" font-size="11.5">A SHARP TOOL IS CHEAPER THAN A FAST ONE &#183; <tspan font-weight="bold">ALWAYS</tspan></text>
+<rect x="44" y="764" width="532" height="94" fill="#f7f4ec" stroke="#000" stroke-width="2"/>
+<text x="54" y="784" font-size="13.5" font-weight="bold">TWIST DRILLS &#183; PAIRS</text>
+<text x="566" y="784" font-size="10" text-anchor="end">SHT&#183;05B</text>
+<line x1="44" y1="794" x2="576" y2="794" stroke="#000" stroke-width="1"/>
+<text x="54" y="813" font-size="10">HANDBOOK ARITHMETIC &#183; WORKED FOR ONE SIZE</text>
+<text x="566" y="813" font-size="10" text-anchor="end">R&amp;S TOOL WORKS</text>
+<line x1="44" y1="822" x2="576" y2="822" stroke="#000" stroke-width="1"/>
+<text x="54" y="843" font-size="10" font-weight="bold">ILLUSTRATIVE FIGURES &#183; THIS SITE IS A DESIGN STUDY</text>
+<line x1="420" y1="764" x2="420" y2="822" stroke="#000" stroke-width="1"/>
 </svg>
       </div>
     </div>
@@ -1144,20 +1164,40 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
     window.addEventListener('load',sizeCallouts);
     window.addEventListener('resize',sizeCallouts);
     setTimeout(sizeCallouts,700);
-    if(reduced){if(callA)callA.classList.add('on');return;}
-    function frame(){
+    if(reduced){if(callA)callA.classList.add('on');if(callB)callB.classList.add('on');return;}
+    /* the page scrolls normally; the drill DESCENDS through the viewport,
+       position easing toward target at the air-cushion rate, and spins up
+       once it has bitten - a drill going down is a drill drilling */
+    var pos=0,target=0;
+    function retarget(){
       var r=wrap.getBoundingClientRect();
       var total=r.height-window.innerHeight;
-      var p=total>0?Math.min(1,Math.max(0,-r.top/total)):0;
-      /* the poster documents itself : the flutes are named once the descent
-         is underway, the margin as you near the shank end */
-      if(callA)callA.classList.toggle('on',p>0.06);
-      if(callB)callB.classList.toggle('on',p>0.45);
-      /* quiet exit : the drills and readout dissolve on the way out,
-         so nothing collides with the fixed chips */
-      var exit=Math.min(1,Math.max(0,r.bottom/(window.innerHeight*0.55)));
-      if(heroObj)heroObj.style.opacity=exit;
-      if(heroRet)heroRet.style.opacity=exit;
+      target=total>0?Math.min(1,Math.max(0,-r.top/total)):0;
+      return r;
+    }
+    function frame(){
+      var r=retarget();
+      pos+=(target-pos)*0.085;           /* the air-cushion rate, page-wide */
+      var vh=window.innerHeight;
+      var total=Math.max(1,r.height-vh);
+      var mobile=window.innerWidth<=900;
+      /* travel beats the scroll, so the drill nets DOWNWARD in the viewport */
+      var travel=total+vh*(mobile?0.26:0.5);
+      stage.style.transform='translate3d(0,'+(pos*travel).toFixed(1)+'px,0)';
+      /* the bite : the spin eases in from the first descent - barely turning
+         while the callouts letter, winding up as it drills down and away */
+      var spin=Math.pow(pos,1.7);
+      img.style.transform='rotate('+(spin*(mobile?300:420)).toFixed(2)+'deg)';
+      /* the poster documents itself early, while the metal is still upright */
+      if(callA)callA.classList.toggle('on',pos>0.04&&pos<0.34);
+      if(callB)callB.classList.toggle('on',pos>0.13&&pos<0.34);
+      /* quiet exit : the drill dissolves as its descent completes, gone
+         before ST-01's claim arrives - it drills INTO the page, not over it */
+      var vanish=1-Math.min(1,Math.max(0,(pos-0.8)/0.18));
+      var exit=Math.min(1,Math.max(0,r.bottom/(vh*0.55)));
+      var op=Math.min(exit,vanish);
+      if(heroObj)heroObj.style.opacity=op;
+      if(heroRet)heroRet.style.opacity=op;
       requestAnimationFrame(frame);
     }
     frame();
@@ -1550,9 +1590,21 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
     var btn=it.querySelector('.nav-btn');
     btn.addEventListener('click',function(e){
       e.stopPropagation();
-      if(it.classList.contains('open')){closeAll();}else{openItem(it);}
+      if(it.classList.contains('open')){
+        /* a pointer click lands right after hover has already opened the
+           room - that click is confirmation, not a toggle. only a keyboard
+           activation (detail 0) closes an open room from the button. */
+        if(e.detail===0)closeAll();
+      }else{openItem(it);}
     });
     btn.addEventListener('mouseenter',function(){openItem(it);});
+    btn.addEventListener('focus',function(){openItem(it);});
+    it.addEventListener('focusout',function(e){
+      if(!it.contains(e.relatedTarget)){
+        clearTimeout(closeTimer);
+        closeTimer=setTimeout(closeAll,120);
+      }
+    });
     it.addEventListener('mouseenter',function(){
       if(it.classList.contains('open'))clearTimeout(closeTimer);
     });
