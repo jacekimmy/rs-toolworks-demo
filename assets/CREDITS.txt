@@ -13,3 +13,4 @@ workshop tools bench | cc0 | Lisa Fotios | https://stocksnap.io/photo/workbench-
 workshop tools bench | cc0 | The World is a Stage | https://stocksnap.io/photo/workshop-wrench-O8DVPXYOIY
 workshop tools bench | cc0 | Flat Lay Photos | https://stocksnap.io/photo/workshop-wrench-SM72VGLBBK
 workshop tools bench | cc0 | unknown | https://www.rawpixel.com/image/13993827/image-cartoon-person-sword
+Code libraries: motion.min.js = Motion v12 (motion.dev), MIT license, vendored locally.

@@ -24,6 +24,7 @@
   --line:rgba(26,23,15,.22);
   --line-soft:rgba(26,23,15,.09);
   --ease:linear(0 0.0%, 0.032 2.1%, 0.0819 6.2%, 0.1281 10.4%, 0.1779 14.6%, 0.2242 18.8%, 0.267 22.9%, 0.3167 27.1%, 0.3559 31.2%, 0.4021 35.4%, 0.4448 39.6%, 0.4875 43.8%, 0.5302 47.9%, 0.5659 52.1%, 0.6049 56.2%, 0.6513 60.4%, 0.6833 64.6%, 0.7188 68.8%, 0.7615 72.9%, 0.7865 77.1%, 0.8434 81.2%, 0.9288 85.4%, 0.9964 89.6%, 1 93.8%, 1 97.9%, 1 100.0%);
+  --spring:linear(0.002083 0.0%, 0.06485 3.6%, 0.2058 7.1%, 0.3786 10.7%, 0.5524 14.3%, 0.7082 17.9%, 0.836 21.4%, 0.9326 25.0%, 0.9997 28.6%, 1.041 32.1%, 1.062 35.7%, 1.069 39.3%, 1.065 42.9%, 1.056 46.4%, 1.046 50.0%, 1.034 53.6%, 1.023 57.1%, 1.013 60.7%, 1.006 64.3%, 1.001 67.9%, 0.9978 71.4%, 0.996 75.0%, 0.9953 78.6%, 0.9954 82.1%, 0.996 85.7%, 0.9967 89.3%, 0.9976 92.9%, 0.9983 96.4%, 0.999 100.0%);
   --fast:130ms; --med:420ms; --slow:720ms;
   --mono:'Space Mono',monospace;
   --body:'Commissioner',sans-serif;
@@ -130,6 +131,11 @@ a{color:inherit}
 .nav-btn:hover .chev{transform:rotate(45deg) translate(1px,1px);border-color:var(--orange)}
 .nav-item.open .nav-btn{background:var(--orange-soft)}
 .nav-item.open .chev{transform:rotate(-135deg);border-color:var(--orange)}
+/* the caliper : the shop's yellow index rides the chip's own tick row */
+.nav-carriage{position:absolute;bottom:-2px;left:0;width:14px;height:2px;background:var(--orange);opacity:0;
+  transition:opacity 160ms var(--ease);pointer-events:none;will-change:transform;z-index:2}
+/* the facing pass : the cutter edge that machines a surface open */
+.cut-edge{position:absolute;top:-2px;bottom:-2px;left:0;width:2px;background:var(--orange);opacity:0;pointer-events:none;z-index:5}
 
 .shopchip{
   position:fixed;top:18px;right:24px;z-index:60;
@@ -149,7 +155,7 @@ a{color:inherit}
   box-shadow:0 4px 0 rgba(26,23,15,.18),0 30px 60px -20px rgba(26,23,15,.3);
   display:grid;grid-template-columns:1fr 232px;overflow:hidden;
   opacity:0;transform:translateY(-6px);pointer-events:none;
-  transition:opacity 190ms var(--ease),transform 250ms var(--ease);
+  transition:opacity 190ms var(--ease),transform 480ms var(--spring);
 }
 .nav-item.open .room{opacity:1;transform:none;pointer-events:auto}
 .room.slim{width:440px;grid-template-columns:1fr}
@@ -193,6 +199,11 @@ main{padding-left:var(--rail-w)}
 /* reveal */
 .rv{opacity:0;transform:translateY(22px);transition:opacity var(--slow) var(--ease),transform var(--slow) var(--ease)}
 .rv.in{opacity:1;transform:none}
+/* the ink grammar, page-wide : ledger rules ink in left-to-right the first
+   time they are seen - the same hand rules every label on the sheet */
+.rv .rule{transform:scaleX(0);transform-origin:left center;transition:transform 420ms var(--ease) 140ms}
+.rv.in .rule{transform:scaleX(1)}
+.rv .lbl.right .rule{transform-origin:right center}
 
 /* ================= ST 00 : arrival ================= */
 .hero{
@@ -207,7 +218,7 @@ main{padding-left:var(--rail-w)}
 .hero h1 .row{display:block}
 .hero h1 .etch{color:var(--orange)}
 .hero h1 .row.ind{padding-left:1.2ch}
-​.hero-line{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--ink-soft);text-transform:uppercase}
+.hero-line{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--ink-soft);text-transform:uppercase}
 .spec-strip{
   border:1.5px solid var(--ink);border-radius:2px;background:var(--paper);
   display:flex;align-items:stretch;flex-wrap:wrap;
@@ -322,7 +333,7 @@ main{padding-left:var(--rail-w)}
 .tsl .claim{max-width:26ch;margin:22px auto 0}
 .tsl-object{max-width:940px;margin:54px auto 0;position:relative}
 .tsl-object img{width:100%;mix-blend-mode:multiply}
-​.fig-cap{font-family:var(--mono);font-size:12px;letter-spacing:.05em;color:var(--ink-soft);text-transform:uppercase;margin:38px auto 0;max-width:70ch}
+.fig-cap{font-family:var(--mono);font-size:12px;letter-spacing:.05em;color:var(--ink-soft);text-transform:uppercase;margin:38px auto 0;max-width:70ch}
 .tsl-facts{
   display:flex;justify-content:center;gap:0;margin:44px auto 0;max-width:860px;
   border:1.5px solid var(--ink);border-radius:2px;background:var(--paper);
@@ -363,6 +374,22 @@ main{padding-left:var(--rail-w)}
 .watch-facts .f{font-family:var(--mono);font-size:12.5px;letter-spacing:.03em;color:var(--ink-soft)}
 .watch-facts .f b{color:var(--ink);font-weight:400}
 
+/* ===== THE HIERARCHY SCALE : site-wide.
+   Real jumps between the four voices: captions recede to small print,
+   keys stay small+bold, the value line is the reading voice, and links
+   are CONTROLS in the machined chip grammar - never dressed as body text. */
+.p-cap span{font-size:10.5px;color:var(--ink-faint);letter-spacing:.09em}
+.lbl .lk{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink)}
+.lbl .lv{font-size:16.5px;line-height:1.55}
+.obj-link{
+  border:2px solid var(--ink);border-radius:2px;background:var(--paper);
+  padding:12px 18px;box-shadow:0 3px 0 rgba(26,23,15,.18);cursor:pointer;
+  font-weight:700;letter-spacing:.05em;text-transform:uppercase;font-size:12.5px;
+  transition:background var(--fast) var(--ease),color var(--fast),transform 80ms var(--ease);
+}
+.obj-link:hover{background:var(--orange-soft);color:var(--ink);border-color:var(--ink)}
+.obj-link:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(26,23,15,.18)}
+
 /* ================= ST 06 : custom ================= */
 .custom{max-width:1280px;margin:0 auto;padding:130px 40px 0}
 .custom-plate{margin-top:54px;box-shadow:0 18px 40px -20px rgba(26,23,15,.5)}
@@ -390,7 +417,7 @@ main{padding-left:var(--rail-w)}
 /* ================= ST 07 : closure ================= */
 footer{margin-top:140px;border-top:1.5px solid var(--line);padding-left:var(--rail-w)}
 .foot{max-width:1280px;margin:0 auto;padding:64px 40px 56px;position:relative;z-index:41;display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap}
-.foot ​.hero-line{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--ink-soft);text-transform:uppercase}
+.foot .hero-line{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--ink-soft);text-transform:uppercase}
 .spec-strip{max-width:none}
 .foot-left{display:flex;flex-direction:column;gap:22px}
 .sign{font-family:var(--mono);font-weight:700;font-size:20px;display:flex;align-items:center;gap:2px}
@@ -415,13 +442,19 @@ footer{margin-top:140px;border-top:1.5px solid var(--line);padding-left:var(--ra
 .where{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);margin-top:4px}
 .foot-links{display:flex;gap:24px}
 .foot-links a{font-family:var(--mono);font-size:12.5px;text-decoration:none;color:var(--ink-soft);
-  border-bottom:1.5px solid transparent;padding-bottom:3px;transition:color var(--fast),border-color var(--fast)}
-.foot-links a:hover{color:var(--orange);border-color:var(--orange)}
+  padding-bottom:3px;position:relative;transition:color var(--fast),transform 60ms var(--ease)}
+/* hover: the yellow inks over the resting line, left to right - the ink
+   grammar, not a color fade */
+.foot-links a::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--orange);
+  transform:scaleX(0);transform-origin:left center;transition:transform 160ms var(--ease)}
+.foot-links a:hover{color:var(--orange)}
+.foot-links a:hover::after{transform:scaleX(1)}
+.foot-links a:active{transform:translateY(1px)}
 
 /* ================= panels ================= */
 .panel{position:fixed;inset:0;z-index:80;background:var(--paper);display:grid;grid-template-columns:1.05fr .95fr;
   opacity:0;pointer-events:none;transform:translateY(16px);
-  transition:opacity 240ms var(--ease),transform 320ms var(--ease);overflow:auto}
+  transition:opacity 240ms var(--ease),transform 480ms var(--spring);overflow:auto}
 .panel.open{opacity:1;pointer-events:auto;transform:none}
 .panel-media{background:var(--paper-deep);border-right:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;padding:64px;min-height:100vh}
 .panel-media img{max-height:70vh;width:auto;max-width:100%;mix-blend-mode:multiply}
@@ -468,7 +501,7 @@ footer{margin-top:140px;border-top:1.5px solid var(--line);padding-left:var(--ra
     display:block;position:fixed;inset:0;z-index:71;background:var(--paper);
     padding:78px 22px 30px;overflow:auto;
     opacity:0;pointer-events:none;transform:translateY(10px);
-    transition:opacity 210ms var(--ease),transform 290ms var(--ease);
+    transition:opacity 210ms var(--ease),transform 460ms var(--spring);
   }
   .msheet.open{opacity:1;pointer-events:auto;transform:none}
   .ms-group{border-top:1.5px solid var(--line);padding:18px 0}
@@ -487,7 +520,7 @@ footer{margin-top:140px;border-top:1.5px solid var(--line);padding-left:var(--ra
 
   .hero{grid-template-columns:1fr;min-height:auto;padding:104px 22px 30px;gap:30px}
   .hero h1{font-size:clamp(28px,8.2vw,38px);word-spacing:-.28ch}
-  ​.hero-line{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--ink-soft);text-transform:uppercase}
+  .hero-line{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--ink-soft);text-transform:uppercase}
 .spec-strip{max-width:none}
   .spec-cell{padding:10px 13px}
   .clock-cell{padding:10px 11px}
@@ -498,7 +531,7 @@ footer{margin-top:140px;border-top:1.5px solid var(--line);padding-left:var(--ra
   .bench{grid-template-columns:1fr;gap:16px}
   .b-plate .ph{aspect-ratio:4/3}
   .tsl{padding:96px 22px 0}
-  ​.fig-cap{font-family:var(--mono);font-size:12px;letter-spacing:.05em;color:var(--ink-soft);text-transform:uppercase;margin:38px auto 0;max-width:70ch}
+  .fig-cap{font-family:var(--mono);font-size:12px;letter-spacing:.05em;color:var(--ink-soft);text-transform:uppercase;margin:38px auto 0;max-width:70ch}
 .tsl-facts{flex-direction:column}
   .tsl-fact{border-right:0;border-bottom:1.5px solid var(--line)}
   .tsl-fact:last-child{border-bottom:0}
@@ -731,7 +764,7 @@ html.hard .room{box-shadow:0 0 0 1px #000 !important}
       <div class="pen-chip rv" style="transition-delay:140ms">
         <p class="claim">Heads that outlive their spindles.</p>
         <p class="fig-cap" style="margin:14px 0 0;text-align:left">Indexable inserts, so a worn edge is a part, not a replacement</p>
-        <button class="obj-link" style="background:none;border:0;border-bottom:1.5px solid var(--ink);cursor:pointer" data-open-panel="pen">See the heads <span class="go">→</span></button>
+        <button class="obj-link" data-open-panel="pen">See the heads <span class="go">→</span></button>
       </div>
     </div>
   </section>
@@ -759,7 +792,7 @@ html.hard .room{box-shadow:0 0 0 1px #000 !important}
       <img src="assets/shop-cnc.webp" alt="The CNC lathe set up for a batch run">
     </div>
     <div class="custom-row rv" style="transition-delay:200ms">
-      <div class="lbl" style="margin:0;min-width:420px">
+      <div class="lbl" style="margin:0;min-width:min(420px,100%)">
         <span class="lk">Terms</span>
         <span class="rule"></span>
         <span class="lv">Minimum 50 pieces · your print or ours · quoted in a day</span>
@@ -773,7 +806,7 @@ html.hard .room{box-shadow:0 0 0 1px #000 !important}
 <footer class="station" data-station="ST·07 SIGN-OFF">
   <div class="foot">
     <div class="foot-left rv">
-      <div class="lbl" style="min-width:340px;margin-top:0" aria-label="Your visit so far">
+      <div class="lbl" style="min-width:min(340px,100%);margin-top:0" aria-label="Your visit so far">
         <span class="lk">We time everything · your visit came to</span>
         <span class="rule"></span>
         <span class="lv">D <b data-u="d">0</b> · H <b data-u="h">00</b> · M <b data-u="m">00</b> · S <b class="val-orange" data-u="s">00</b></span>
@@ -845,6 +878,7 @@ html.hard .room{box-shadow:0 0 0 1px #000 !important}
   </div>
 </div>
 
+<script src="assets/motion.min.js"></script>
 <script>
 (function(){
   'use strict';
@@ -871,6 +905,76 @@ html.hard .room{box-shadow:0 0 0 1px #000 !important}
   tick();setInterval(tick,1000);
 
   var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ===== Motion : real interruptible springs on everything that opens =====
+     vendored locally (assets/motion.min.js). CSS transitions stay as fallback;
+     when Motion is present we disable them and drive the spring ourselves. */
+  var M=window.Motion&&window.Motion.animate?window.Motion:null;
+  function springOpen(el,fromY,skipFade){
+    if(!M||reduced)return;
+    el.style.transition='none';
+    if(skipFade){
+      /* the facing pass is doing the reveal : the material must be SOLID
+         while the cutter crosses it, or the cut reads as a plain fade */
+      el.style.opacity='1';
+      M.animate(el,{y:0},{type:'spring',stiffness:170,damping:20});
+      return;
+    }
+    M.animate(el,{opacity:1,y:0},{type:'spring',stiffness:170,damping:20,opacity:{duration:.19,ease:'easeOut'}});
+  }
+  function springClose(el,toY){
+    if(!M||reduced)return;
+    el.style.transition='none';
+    M.animate(el,{opacity:0,y:toY},{duration:.18,ease:'easeOut'});
+  }
+
+  /* THE FACING PASS : a room is not faded in, it is machined open -
+     one cutter pass, left to right, the cut front marked by the same
+     yellow index that rides the rail */
+  function facingPass(room,maxT){
+    if(reduced||!room.animate)return;
+    var edge=room.__edge;
+    if(!edge){edge=document.createElement('span');edge.className='cut-edge';room.appendChild(edge);room.__edge=edge;}
+    var w=room.offsetWidth;
+    if(!w)return;
+    var T=maxT||240;
+    room.style.opacity='1';   /* solid material : the cut is the reveal */
+    try{
+      room.animate(
+        [{clipPath:'inset(-4px 100% -90px -4px)'},{clipPath:'inset(-4px -4px -90px -4px)'}],
+        {duration:T,easing:'cubic-bezier(.22,1,.36,1)'});
+      edge.style.opacity='1';
+      var sweep=edge.animate(
+        [{transform:'translateX(0)'},{transform:'translateX('+(w-2)+'px)'}],
+        {duration:T,easing:'cubic-bezier(.22,1,.36,1)'});
+      sweep.onfinish=function(){edge.style.opacity='0';};
+    }catch(e){}
+  }
+
+  /* THE CALIPER : the chip's bottom edge is already a tick row; a yellow
+     carriage springs along it to whatever you point at, like a caliper jaw */
+  (function(){
+    var chip=document.querySelector('.toolchip');
+    if(!chip||reduced)return;
+    var car=document.createElement('span');car.className='nav-carriage';chip.appendChild(car);
+    var navItems=[].slice.call(chip.querySelectorAll('.nav-item'));
+    if(!navItems.length)return;
+    var placed=false;
+    function to(item){
+      var x=item.offsetLeft+item.offsetWidth/2-7;
+      car.style.opacity='1';
+      if(M&&placed){M.animate(car,{x:x},{type:'spring',stiffness:300,damping:26});}
+      else{car.style.transform='translateX('+x+'px)';placed=true;}
+    }
+    navItems.forEach(function(it){
+      it.addEventListener('mouseenter',function(){to(it);});
+      it.querySelector('.nav-btn').addEventListener('focus',function(){to(it);});
+    });
+    chip.addEventListener('mouseleave',function(){
+      var open=chip.querySelector('.nav-item.open');
+      if(open)to(open);else car.style.opacity='0';
+    });
+  })();
 
   /* reveals */
   var io=new IntersectionObserver(function(es){
@@ -940,13 +1044,19 @@ html.hard .room{box-shadow:0 0 0 1px #000 !important}
   function openItem(it){
     clearTimeout(closeTimer);
     items.forEach(function(o){
-      var is=o===it;
+      var is=o===it, was=o.classList.contains('open');
       o.classList.toggle('open',is);
       o.querySelector('.nav-btn').setAttribute('aria-expanded',is?'true':'false');
+      var room=o.querySelector('.room');
+      if(is&&!was){springOpen(room,-6,true);facingPass(room);}
+      if(!is&&was)springClose(room,-6);
     });
   }
   function closeAll(){
-    items.forEach(function(o){o.classList.remove('open');o.querySelector('.nav-btn').setAttribute('aria-expanded','false');});
+    items.forEach(function(o){
+      if(o.classList.contains('open'))springClose(o.querySelector('.room'),-6);
+      o.classList.remove('open');o.querySelector('.nav-btn').setAttribute('aria-expanded','false');
+    });
   }
   items.forEach(function(it){
     var btn=it.querySelector('.nav-btn');
@@ -971,6 +1081,7 @@ html.hard .room{box-shadow:0 0 0 1px #000 !important}
   function closeSheet(){if(sheet){sheet.classList.remove('open');menuBtn.setAttribute('aria-expanded','false');menuBtn.textContent='MENU';}}
   if(menuBtn){menuBtn.addEventListener('click',function(){
     var open=sheet.classList.toggle('open');
+    if(open)springOpen(sheet,10);else springClose(sheet,10);
     menuBtn.setAttribute('aria-expanded',open?'true':'false');
     menuBtn.textContent=open?'CLOSE':'MENU';
   });}
@@ -984,12 +1095,13 @@ html.hard .room{box-shadow:0 0 0 1px #000 !important}
     var p=document.getElementById('panel-'+id);
     if(!p)return;
     p.classList.add('open');closeBtn.classList.add('show');
+    springOpen(p,16,true);facingPass(p,360);
     document.body.style.overflow='hidden';
     closeBtn.focus();
   }
   function closePanels(){
     var any=false;
-    document.querySelectorAll('.panel.open').forEach(function(p){p.classList.remove('open');any=true;});
+    document.querySelectorAll('.panel.open').forEach(function(p){springClose(p,10);p.classList.remove('open');any=true;});
     if(any){closeBtn.classList.remove('show');document.body.style.overflow='';if(lastFocus)lastFocus.focus();}
   }
   document.querySelectorAll('[data-open-panel]').forEach(function(el){
