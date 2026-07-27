@@ -229,7 +229,7 @@ main{padding-left:0}
 .holder{width:auto;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
 .tool-stage{height:96vh;margin-bottom:-5vh;position:relative}
 .tool-stage svg{height:100%;width:auto;aspect-ratio:336/600;display:block}
-.tool-stage #etch text{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;fill:#a7adb6}
+.tool-stage #etch text{font-family:var(--mono);font-size:9px;letter-spacing:.12em;fill:#a7adb6}
 
 .hero h1{
   font-family:var(--mono);font-weight:700;font-size:clamp(44px,5.6vw,86px);
@@ -653,12 +653,12 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
           <svg viewBox="0 0 336 600" role="img" aria-label="A high-speed steel twist drill descending through the bench rule as you scroll">
             <defs>
               <linearGradient id="gBody" x1="130" x2="206" y1="0" y2="0" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#232529"/>
-                <stop offset=".16" stop-color="#4c5057"/>
-                <stop offset=".30" stop-color="#282a2e"/>
-                <stop offset=".62" stop-color="#1e2023"/>
-                <stop offset=".85" stop-color="#3a3d43"/>
-                <stop offset="1" stop-color="#17181b"/>
+                <stop offset="0" stop-color="#2a2c31"/>
+                <stop offset=".16" stop-color="#585c64"/>
+                <stop offset=".30" stop-color="#2e3035"/>
+                <stop offset=".62" stop-color="#24262a"/>
+                <stop offset=".85" stop-color="#474a52"/>
+                <stop offset="1" stop-color="#1b1c20"/>
               </linearGradient>
               <linearGradient id="gShade" x1="130" x2="206" y1="0" y2="0" gradientUnits="userSpaceOnUse">
                 <stop offset="0" stop-color="#000" stop-opacity=".5"/>
@@ -689,33 +689,56 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
                 <ellipse cx="168" cy="6" rx="38" ry="5" fill="url(#gShade)" opacity=".5"/>
                 <path d="M130,6 A38,5 0 0 1 206,6" fill="none" stroke="#9298a1" stroke-opacity=".8" stroke-width="1.3"/>
                 <g clip-path="url(#fluteClip)"><g id="helix">
-                  <polygon points="130,79 206,42 206,57 130,94" fill="#0c0d0f" fill-opacity=".82"/>
-                  <polygon points="130,95 206,58 206,60.5 130,97.5" fill="#c8cdd6" fill-opacity=".35"/>
-                  <polygon points="130,127 206,90 206,105 130,142" fill="#0c0d0f" fill-opacity=".82"/>
-                  <polygon points="130,143 206,106 206,108.5 130,145.5" fill="#c8cdd6" fill-opacity=".35"/>
-                  <polygon points="130,175 206,138 206,153 130,190" fill="#0c0d0f" fill-opacity=".82"/>
-                  <polygon points="130,191 206,154 206,156.5 130,193.5" fill="#c8cdd6" fill-opacity=".35"/>
-                  <polygon points="130,223 206,186 206,201 130,238" fill="#0c0d0f" fill-opacity=".82"/>
-                  <polygon points="130,239 206,202 206,204.5 130,241.5" fill="#c8cdd6" fill-opacity=".35"/>
-                  <polygon points="130,271 206,234 206,249 130,286" fill="#0c0d0f" fill-opacity=".82"/>
-                  <polygon points="130,287 206,250 206,252.5 130,289.5" fill="#c8cdd6" fill-opacity=".35"/>
-                  <polygon points="130,319 206,282 206,297 130,334" fill="#0c0d0f" fill-opacity=".82"/>
-                  <polygon points="130,335 206,298 206,300.5 130,337.5" fill="#c8cdd6" fill-opacity=".35"/>
-                  <polygon points="130,367 206,330 206,345 130,382" fill="#0c0d0f" fill-opacity=".82"/>
-                  <polygon points="130,383 206,346 206,348.5 130,385.5" fill="#c8cdd6" fill-opacity=".35"/>
-                  <polygon points="130,415 206,378 206,393 130,430" fill="#0c0d0f" fill-opacity=".82"/>
-                  <polygon points="130,431 206,394 206,396.5 130,433.5" fill="#c8cdd6" fill-opacity=".35"/>
-                  <polygon points="130,463 206,426 206,441 130,478" fill="#0c0d0f" fill-opacity=".82"/>
-                  <polygon points="130,479 206,442 206,444.5 130,481.5" fill="#c8cdd6" fill-opacity=".35"/>
-                  <polygon points="130,511 206,474 206,489 130,526" fill="#0c0d0f" fill-opacity=".82"/>
-                  <polygon points="130,527 206,490 206,492.5 130,529.5" fill="#c8cdd6" fill-opacity=".35"/>
+                  <path d="M130,40 C130,56 206,68 206,84 L206,99 C206,83 130,71 130,55 Z" fill="#0b0c0e" fill-opacity=".85"/>
+                  <path d="M130,55 C130,71 206,83 206,99" fill="none" stroke="#cdd2da" stroke-opacity=".32" stroke-width="2.5"/>
+                  <rect x="130.5" y="59" width="2" height="25" fill="#c3c9d2" fill-opacity=".45"/>
+                  <rect x="203.5" y="103" width="2" height="25" fill="#c3c9d2" fill-opacity=".6"/>
+                  <path d="M130,88 C130,104 206,116 206,132 L206,147 C206,131 130,119 130,103 Z" fill="#0b0c0e" fill-opacity=".85"/>
+                  <path d="M130,103 C130,119 206,131 206,147" fill="none" stroke="#cdd2da" stroke-opacity=".32" stroke-width="2.5"/>
+                  <rect x="130.5" y="107" width="2" height="25" fill="#c3c9d2" fill-opacity=".45"/>
+                  <rect x="203.5" y="151" width="2" height="25" fill="#c3c9d2" fill-opacity=".6"/>
+                  <path d="M130,136 C130,152 206,164 206,180 L206,195 C206,179 130,167 130,151 Z" fill="#0b0c0e" fill-opacity=".85"/>
+                  <path d="M130,151 C130,167 206,179 206,195" fill="none" stroke="#cdd2da" stroke-opacity=".32" stroke-width="2.5"/>
+                  <rect x="130.5" y="155" width="2" height="25" fill="#c3c9d2" fill-opacity=".45"/>
+                  <rect x="203.5" y="199" width="2" height="25" fill="#c3c9d2" fill-opacity=".6"/>
+                  <path d="M130,184 C130,200 206,212 206,228 L206,243 C206,227 130,215 130,199 Z" fill="#0b0c0e" fill-opacity=".85"/>
+                  <path d="M130,199 C130,215 206,227 206,243" fill="none" stroke="#cdd2da" stroke-opacity=".32" stroke-width="2.5"/>
+                  <rect x="130.5" y="203" width="2" height="25" fill="#c3c9d2" fill-opacity=".45"/>
+                  <rect x="203.5" y="247" width="2" height="25" fill="#c3c9d2" fill-opacity=".6"/>
+                  <path d="M130,232 C130,248 206,260 206,276 L206,291 C206,275 130,263 130,247 Z" fill="#0b0c0e" fill-opacity=".85"/>
+                  <path d="M130,247 C130,263 206,275 206,291" fill="none" stroke="#cdd2da" stroke-opacity=".32" stroke-width="2.5"/>
+                  <rect x="130.5" y="251" width="2" height="25" fill="#c3c9d2" fill-opacity=".45"/>
+                  <rect x="203.5" y="295" width="2" height="25" fill="#c3c9d2" fill-opacity=".6"/>
+                  <path d="M130,280 C130,296 206,308 206,324 L206,339 C206,323 130,311 130,295 Z" fill="#0b0c0e" fill-opacity=".85"/>
+                  <path d="M130,295 C130,311 206,323 206,339" fill="none" stroke="#cdd2da" stroke-opacity=".32" stroke-width="2.5"/>
+                  <rect x="130.5" y="299" width="2" height="25" fill="#c3c9d2" fill-opacity=".45"/>
+                  <rect x="203.5" y="343" width="2" height="25" fill="#c3c9d2" fill-opacity=".6"/>
+                  <path d="M130,328 C130,344 206,356 206,372 L206,387 C206,371 130,359 130,343 Z" fill="#0b0c0e" fill-opacity=".85"/>
+                  <path d="M130,343 C130,359 206,371 206,387" fill="none" stroke="#cdd2da" stroke-opacity=".32" stroke-width="2.5"/>
+                  <rect x="130.5" y="347" width="2" height="25" fill="#c3c9d2" fill-opacity=".45"/>
+                  <rect x="203.5" y="391" width="2" height="25" fill="#c3c9d2" fill-opacity=".6"/>
+                  <path d="M130,376 C130,392 206,404 206,420 L206,435 C206,419 130,407 130,391 Z" fill="#0b0c0e" fill-opacity=".85"/>
+                  <path d="M130,391 C130,407 206,419 206,435" fill="none" stroke="#cdd2da" stroke-opacity=".32" stroke-width="2.5"/>
+                  <rect x="130.5" y="395" width="2" height="25" fill="#c3c9d2" fill-opacity=".45"/>
+                  <rect x="203.5" y="439" width="2" height="25" fill="#c3c9d2" fill-opacity=".6"/>
+                  <path d="M130,424 C130,440 206,452 206,468 L206,483 C206,467 130,455 130,439 Z" fill="#0b0c0e" fill-opacity=".85"/>
+                  <path d="M130,439 C130,455 206,467 206,483" fill="none" stroke="#cdd2da" stroke-opacity=".32" stroke-width="2.5"/>
+                  <rect x="130.5" y="443" width="2" height="25" fill="#c3c9d2" fill-opacity=".45"/>
+                  <rect x="203.5" y="487" width="2" height="25" fill="#c3c9d2" fill-opacity=".6"/>
+                  <path d="M130,472 C130,488 206,500 206,516 L206,531 C206,515 130,503 130,487 Z" fill="#0b0c0e" fill-opacity=".85"/>
+                  <path d="M130,487 C130,503 206,515 206,531" fill="none" stroke="#cdd2da" stroke-opacity=".32" stroke-width="2.5"/>
+                  <rect x="130.5" y="491" width="2" height="25" fill="#c3c9d2" fill-opacity=".45"/>
+                  <rect x="203.5" y="535" width="2" height="25" fill="#c3c9d2" fill-opacity=".6"/>
                 </g></g>
-                <rect x="130.5" y="90" width="2" height="320" fill="#bec4cd" fill-opacity=".5"/>
-                <rect x="203.5" y="90" width="2" height="320" fill="#bec4cd" fill-opacity=".68"/>
                 <rect x="130" y="408.5" width="76" height="1.5" fill="#e6eaf0" fill-opacity=".5"/>
                 <polygon points="130,410 206,410 168,433" fill="url(#gPoint)"/>
-                <polygon points="130,410 168,410 168,433" fill="#000" fill-opacity=".16"/>
-                <line x1="168" y1="410" x2="168" y2="433" stroke="#f0f3f7" stroke-opacity=".75" stroke-width="1.2"/>
+                <polygon points="206,410 168,433 168,410" fill="#000" fill-opacity=".22"/>
+                <path d="M132,410 C144,416 158,424 168,433 C160,422 150,413 140,408 Z" fill="#14161a" fill-opacity=".8"/>
+                <line x1="130" y1="410" x2="168" y2="433" stroke="#d8dce2" stroke-opacity=".35" stroke-width="1"/>
+                <line x1="206" y1="410" x2="168" y2="433" stroke="#90959c" stroke-opacity=".3" stroke-width="1"/>
+                <line x1="162" y1="430" x2="174" y2="427" stroke="#eef1f5" stroke-opacity=".8" stroke-width="1.3"/>
+                <rect x="130" y="405" width="1.5" height="5" fill="#dfe3e9" fill-opacity=".5"/>
+                <rect x="204.5" y="405" width="1.5" height="5" fill="#dfe3e9" fill-opacity=".5"/>
                 <rect x="130" y="6" width="76" height="404" fill="url(#gShade)"/>
                 <polygon points="130,410 206,410 168,433" fill="url(#gShade)" opacity=".7"/>
                 <g id="etch"><text transform="translate(163,16) rotate(90)">R&amp;S &#183; HSS &#183; &#216;9.5</text></g>
@@ -999,8 +1022,9 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
 <text x="514.7" y="303.2" font-size="11">THE FLUTES &#183; THEY CARRY THE CHIPS OUT</text>
 <line x1="190.0" y1="235.2" x2="120.0" y2="289.2" stroke="#000" stroke-width="1"/>
 <text x="44.0" y="303.2" font-size="11">PLAIN SHANK &#183; SIZED FOR COMMON CHUCKS</text>
-<line x1="810.0" y1="204.0" x2="844.0" y2="150.0" stroke="#000" stroke-width="1"/>
-<text x="904.0" y="144.0" font-size="11" text-anchor="end">POINT GROUND AT [118&#176;] &#183; CHECKED BY EYE</text>
+<line x1="812.0" y1="200.0" x2="848.0" y2="176.0" stroke="#000" stroke-width="1"/>
+<rect x="602" y="157" width="344" height="17" fill="#f7f4ec"/>
+<text x="940.0" y="170.0" font-size="11" text-anchor="end">POINT GROUND AT [118&#176;] &#183; CHECKED BY EYE</text>
 <line x1="80.0" y1="311.2" x2="80.0" y2="335.2" stroke="#000" stroke-width="1"/>
 <line x1="814.0" y1="218.0" x2="814.0" y2="335.2" stroke="#000" stroke-width="1"/>
 <line x1="80.0" y1="329.2" x2="814.0" y2="329.2" stroke="#000" stroke-width="1" marker-start="url(#ar)" marker-end="url(#ae)"/>
@@ -1015,16 +1039,16 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
 <line x1="74.0" y1="233.2" x2="52.0" y2="233.2" stroke="#000" stroke-width="1"/>
 <line x1="58.0" y1="186.8" x2="58.0" y2="233.2" stroke="#000" stroke-width="1"/>
 <text x="58.0" y="178.8" font-size="11" text-anchor="middle">&#216;[6.0]</text>
-<text x="866" y="120" font-size="13" font-weight="bold" text-anchor="middle">SECTION A&#8211;A</text>
-<clipPath id="secclip"><circle cx="866" cy="176" r="32"/></clipPath>
-<g clip-path="url(#secclip)"><path d="M 834.0 176.0 a 32.0 32.0 0 1 0 64.0 0 a 32.0 32.0 0 1 0 -64.0 0 Z M 870.0 152.0 a 20 20 0 1 0 40 0 a 20 20 0 1 0 -40 0 Z M 822.0 200.0 a 20 20 0 1 0 40 0 a 20 20 0 1 0 -40 0 Z" fill="url(#h45)" fill-rule="evenodd" stroke="none"/></g>
-<circle cx="866" cy="176" r="32" fill="none" stroke="#000" stroke-width="2"/>
-<g clip-path="url(#secclip)"><circle cx="890.0" cy="152.0" r="20" fill="none" stroke="#000" stroke-width="2"/>
-<circle cx="842.0" cy="200.0" r="20" fill="none" stroke="#000" stroke-width="2"/></g>
-<text x="866" y="238" font-size="12" text-anchor="middle">&#216;[6.0] &#183; TWO FLUTES</text>
-<text x="866" y="256" font-size="10" text-anchor="middle" opacity="0.75">THE WEB &#183; THE SPINE BETWEEN THEM</text>
-<line x1="843.6" y1="153.6" x2="808.0" y2="126.0" stroke="#000" stroke-width="1"/>
-<text x="804.0" y="122.0" font-size="10" text-anchor="end">THE MARGIN</text>
+<text x="866" y="272" font-size="13" font-weight="bold" text-anchor="middle">SECTION A&#8211;A</text>
+<clipPath id="secclip"><circle cx="866" cy="322" r="32"/></clipPath>
+<g clip-path="url(#secclip)"><path d="M 834.0 322.0 a 32.0 32.0 0 1 0 64.0 0 a 32.0 32.0 0 1 0 -64.0 0 Z M 870.0 298.0 a 20 20 0 1 0 40 0 a 20 20 0 1 0 -40 0 Z M 822.0 346.0 a 20 20 0 1 0 40 0 a 20 20 0 1 0 -40 0 Z" fill="url(#h45)" fill-rule="evenodd" stroke="none"/></g>
+<circle cx="866" cy="322" r="32" fill="none" stroke="#000" stroke-width="2"/>
+<g clip-path="url(#secclip)"><circle cx="890.0" cy="298.0" r="20" fill="none" stroke="#000" stroke-width="2"/>
+<circle cx="842.0" cy="346.0" r="20" fill="none" stroke="#000" stroke-width="2"/></g>
+<text x="866" y="384" font-size="12" text-anchor="middle">&#216;[6.0] &#183; TWO FLUTES</text>
+<text x="866" y="401" font-size="10" text-anchor="middle" opacity="0.75">THE WEB &#183; THE DRILL&#8217;S SPINE</text>
+<line x1="838.0" y1="334.0" x2="806.0" y2="350.0" stroke="#000" stroke-width="1"/>
+<text x="800.0" y="354.0" font-size="10" text-anchor="end">THE MARGIN</text>
 <text x="80" y="404" font-size="13" font-weight="bold">THE GRIND</text>
 <line x1="80" y1="414" x2="470" y2="414" stroke="#000" stroke-width="2"/>
 <text x="80" y="440" font-size="11.5">HELIX ANGLE</text>
@@ -1050,7 +1074,7 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
 <text x="930" y="497" font-size="10" text-anchor="end">R&amp;S TOOL WORKS</text>
 <line x1="548" y1="506" x2="940" y2="506" stroke="#000" stroke-width="1"/>
 <text x="558" y="527" font-size="10" font-weight="bold">ILLUSTRATIVE FIGURES &#183; THIS SITE IS A DESIGN STUDY</text>
-<line x1="852" y1="424" x2="852" y2="506" stroke="#000" stroke-width="1"/>
+<line x1="832" y1="424" x2="832" y2="506" stroke="#000" stroke-width="1"/>
 </svg>
       </div>
       <div class="drawing-sheet" aria-label="Speeds and feeds arithmetic worked for one drill">
