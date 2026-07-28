@@ -20,3 +20,6 @@ drills-alpha.webp = drills-yellow.webp with the yellow ground removed to alpha
   (deterministic border-connected flood fill, Python/PIL). Same CC0 source as above.
 paper.webp = procedural paper texture tile generated for this study (Python/PIL,
   seeded noise). Not a photograph. CC0.
+drill-seq/ = 36-frame rotation film of a two-flute twist drill, modeled and
+  rendered in Blender for this study (headless, procedural geometry).
+  Original work, no external assets. CC0.

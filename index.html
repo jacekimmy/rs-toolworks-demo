@@ -228,7 +228,8 @@ main{padding-left:0}
 .hero-object{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;z-index:1}
 .holder{width:auto;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
 .tool-stage{height:96vh;margin-bottom:-5vh;position:relative}
-.tool-stage svg{height:100%;width:auto;aspect-ratio:336/600;display:block}
+.tool-stage svg{height:100%;width:auto;aspect-ratio:336/600;display:block;position:relative;z-index:1}
+.tool-stage .drill-film{position:absolute;inset:0;width:100%;height:100%;display:block}
 .tool-stage #etch text{font-family:var(--mono);font-size:9px;letter-spacing:.12em;fill:#a7adb6}
 
 .hero h1{
@@ -239,6 +240,11 @@ main{padding-left:0}
 .hero h1 .row{display:block}
 .hero h1 .etch{color:var(--yellow)}
 .hero h1 .row.ind{padding-left:1.2ch}
+/* the poster states who; these two lines state what and where to go -
+   the quiet job every premium hero still does */
+.hero-sub{font-size:16.5px;line-height:1.55;color:var(--ink-soft);max-width:46ch;margin:4px 0 0}
+.hero-state .hero-cta{align-self:flex-start;margin-top:2px}
+@media (max-width:900px){.hero-sub,.hero-state .hero-cta{display:none}}
 .hero-line{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--ink-soft);text-transform:uppercase}
 
 /* ===== the signature : scroll drives the drill =====
@@ -461,13 +467,23 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
 .panel-close:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(26,23,15,.18)}
 
 /* ================= the sheets ================= */
-.sheet-row{display:grid;grid-template-columns:1.5fr 1fr;gap:26px;align-items:start;max-width:1280px;margin:96px auto 0;padding:0 40px;width:100%}
+/* sheets are documents : each claims the full rail so its lettering stays
+   at reading size (the old 1.5fr/1fr grid rendered sheet text at ~8px) */
+.sheet-row{display:flex;flex-direction:column;align-items:center;gap:40px;max-width:1280px;margin:96px auto 0;padding:0 40px;width:100%}
+.sheet-row .drawing-sheet{width:100%;max-width:1100px}
+.sheet-row .drawing-sheet + .drawing-sheet{max-width:660px}
 .sheet-row .drawing-sheet{margin:0;padding:0;max-width:none}
 /* inside the centered drills column the row must claim the full rail -
    without this the SVGs collapse to their 300px default intrinsic size */
 .drills .sheet-row{padding:0}
 .feature .drawing-sheet{max-width:1060px;margin-top:72px}
-@media (max-width:900px){.sheet-row{grid-template-columns:1fr;gap:32px;margin:56px auto 0;padding:0 22px}}
+@media (max-width:900px){.sheet-row{gap:32px;margin:56px auto 0;padding:0 22px}}
+/* a drawing you can't read is a drawing that isn't there : on small
+   screens sheets keep a readable scale and pan sideways like real prints */
+@media (max-width:700px){
+  .drawing-sheet{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .drawing-sheet svg{min-width:740px}
+}
 .drawing-sheet{max-width:1200px;margin:64px auto 0;padding:0 40px}
 .drawing-sheet svg{width:100%;height:auto;display:block}
 .drawing-sheet svg text{letter-spacing:.04em}
@@ -646,10 +662,11 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
     <div class="hero-object">
       <div class="holder">
         <div class="tool-stage" data-drillstage>
-          <!-- the drill is drawn, not photographed : a coded object can obey
-               the physics. it hangs from above the frame, and your scroll
-               plunges it through the bench rule - the flute helix phases as
-               it bites, which is what a spinning drill looks like side-on -->
+          <!-- the drill is RENDERED, not photographed : a true helical model
+               (Blender, 36 frames over one half-turn) scrubbed by your scroll,
+               the pen film's own mechanic. the drawn SVG drill beneath is the
+               instant fallback while the film loads -->
+          <canvas class="drill-film" width="672" height="1200" aria-hidden="true"></canvas>
           <svg viewBox="0 0 336 600" role="img" aria-label="A high-speed steel twist drill descending through the bench rule as you scroll">
             <defs>
               <linearGradient id="gBody" x1="130" x2="206" y1="0" y2="0" gradientUnits="userSpaceOnUse">
@@ -674,7 +691,7 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
                 <stop offset="1" stop-color="#565b62"/>
               </linearGradient>
               <clipPath id="benchClip"><rect x="0" y="0" width="336" height="505"/></clipPath>
-              <clipPath id="fluteClip"><rect x="130" y="90" width="76" height="320"/></clipPath>
+              <clipPath id="fluteClip"><rect x="120" y="90" width="96" height="320"/></clipPath>
               <pattern id="benchTicks" width="12" height="7" patternUnits="userSpaceOnUse">
                 <rect x="0" y="0" width="1.5" height="7" fill="#1a170f"/>
               </pattern>
@@ -689,60 +706,92 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
                 <ellipse cx="168" cy="6" rx="38" ry="5" fill="url(#gShade)" opacity=".5"/>
                 <path d="M130,6 A38,5 0 0 1 206,6" fill="none" stroke="#9298a1" stroke-opacity=".8" stroke-width="1.3"/>
                 <g clip-path="url(#fluteClip)"><g id="helix">
-                  <path d="M130,40 C130,56 206,68 206,84 L206,99 C206,83 130,71 130,55 Z" fill="#0b0c0e" fill-opacity=".85"/>
-                  <path d="M130,55 C130,71 206,83 206,99" fill="none" stroke="#cdd2da" stroke-opacity=".32" stroke-width="2.5"/>
-                  <rect x="130.5" y="59" width="2" height="25" fill="#c3c9d2" fill-opacity=".45"/>
-                  <rect x="203.5" y="103" width="2" height="25" fill="#c3c9d2" fill-opacity=".6"/>
-                  <path d="M130,88 C130,104 206,116 206,132 L206,147 C206,131 130,119 130,103 Z" fill="#0b0c0e" fill-opacity=".85"/>
-                  <path d="M130,103 C130,119 206,131 206,147" fill="none" stroke="#cdd2da" stroke-opacity=".32" stroke-width="2.5"/>
-                  <rect x="130.5" y="107" width="2" height="25" fill="#c3c9d2" fill-opacity=".45"/>
-                  <rect x="203.5" y="151" width="2" height="25" fill="#c3c9d2" fill-opacity=".6"/>
-                  <path d="M130,136 C130,152 206,164 206,180 L206,195 C206,179 130,167 130,151 Z" fill="#0b0c0e" fill-opacity=".85"/>
-                  <path d="M130,151 C130,167 206,179 206,195" fill="none" stroke="#cdd2da" stroke-opacity=".32" stroke-width="2.5"/>
-                  <rect x="130.5" y="155" width="2" height="25" fill="#c3c9d2" fill-opacity=".45"/>
-                  <rect x="203.5" y="199" width="2" height="25" fill="#c3c9d2" fill-opacity=".6"/>
-                  <path d="M130,184 C130,200 206,212 206,228 L206,243 C206,227 130,215 130,199 Z" fill="#0b0c0e" fill-opacity=".85"/>
-                  <path d="M130,199 C130,215 206,227 206,243" fill="none" stroke="#cdd2da" stroke-opacity=".32" stroke-width="2.5"/>
-                  <rect x="130.5" y="203" width="2" height="25" fill="#c3c9d2" fill-opacity=".45"/>
-                  <rect x="203.5" y="247" width="2" height="25" fill="#c3c9d2" fill-opacity=".6"/>
-                  <path d="M130,232 C130,248 206,260 206,276 L206,291 C206,275 130,263 130,247 Z" fill="#0b0c0e" fill-opacity=".85"/>
-                  <path d="M130,247 C130,263 206,275 206,291" fill="none" stroke="#cdd2da" stroke-opacity=".32" stroke-width="2.5"/>
-                  <rect x="130.5" y="251" width="2" height="25" fill="#c3c9d2" fill-opacity=".45"/>
-                  <rect x="203.5" y="295" width="2" height="25" fill="#c3c9d2" fill-opacity=".6"/>
-                  <path d="M130,280 C130,296 206,308 206,324 L206,339 C206,323 130,311 130,295 Z" fill="#0b0c0e" fill-opacity=".85"/>
-                  <path d="M130,295 C130,311 206,323 206,339" fill="none" stroke="#cdd2da" stroke-opacity=".32" stroke-width="2.5"/>
-                  <rect x="130.5" y="299" width="2" height="25" fill="#c3c9d2" fill-opacity=".45"/>
-                  <rect x="203.5" y="343" width="2" height="25" fill="#c3c9d2" fill-opacity=".6"/>
-                  <path d="M130,328 C130,344 206,356 206,372 L206,387 C206,371 130,359 130,343 Z" fill="#0b0c0e" fill-opacity=".85"/>
-                  <path d="M130,343 C130,359 206,371 206,387" fill="none" stroke="#cdd2da" stroke-opacity=".32" stroke-width="2.5"/>
-                  <rect x="130.5" y="347" width="2" height="25" fill="#c3c9d2" fill-opacity=".45"/>
-                  <rect x="203.5" y="391" width="2" height="25" fill="#c3c9d2" fill-opacity=".6"/>
-                  <path d="M130,376 C130,392 206,404 206,420 L206,435 C206,419 130,407 130,391 Z" fill="#0b0c0e" fill-opacity=".85"/>
-                  <path d="M130,391 C130,407 206,419 206,435" fill="none" stroke="#cdd2da" stroke-opacity=".32" stroke-width="2.5"/>
-                  <rect x="130.5" y="395" width="2" height="25" fill="#c3c9d2" fill-opacity=".45"/>
-                  <rect x="203.5" y="439" width="2" height="25" fill="#c3c9d2" fill-opacity=".6"/>
-                  <path d="M130,424 C130,440 206,452 206,468 L206,483 C206,467 130,455 130,439 Z" fill="#0b0c0e" fill-opacity=".85"/>
-                  <path d="M130,439 C130,455 206,467 206,483" fill="none" stroke="#cdd2da" stroke-opacity=".32" stroke-width="2.5"/>
-                  <rect x="130.5" y="443" width="2" height="25" fill="#c3c9d2" fill-opacity=".45"/>
-                  <rect x="203.5" y="487" width="2" height="25" fill="#c3c9d2" fill-opacity=".6"/>
-                  <path d="M130,472 C130,488 206,500 206,516 L206,531 C206,515 130,503 130,487 Z" fill="#0b0c0e" fill-opacity=".85"/>
-                  <path d="M130,487 C130,503 206,515 206,531" fill="none" stroke="#cdd2da" stroke-opacity=".32" stroke-width="2.5"/>
-                  <rect x="130.5" y="491" width="2" height="25" fill="#c3c9d2" fill-opacity=".45"/>
-                  <rect x="203.5" y="535" width="2" height="25" fill="#c3c9d2" fill-opacity=".6"/>
+                  <path d="M130,40 C130,56 206,68 206,84 L206,106 C206,90 130,78 130,62 Z" fill="#0b0c0e" fill-opacity=".88"/>
+                  <path d="M130,59 C130,75 206,87 206,103" fill="none" stroke="#3a3e45" stroke-opacity=".9" stroke-width="3"/>
+                  <path d="M130,62 C130,78 206,90 206,106" fill="none" stroke="#cdd2da" stroke-opacity=".38" stroke-width="2.2"/>
+                  <path d="M126,42 Q138,51 126,60 Z" fill="#f2eee4"/>
+                  <path d="M210,86 Q198,95 210,104 Z" fill="#f2eee4"/>
+                  <rect x="130.5" y="66" width="2" height="18" fill="#c3c9d2" fill-opacity=".5"/>
+                  <rect x="203.5" y="110" width="2" height="18" fill="#c3c9d2" fill-opacity=".62"/>
+                  <path d="M130,88 C130,104 206,116 206,132 L206,154 C206,138 130,126 130,110 Z" fill="#0b0c0e" fill-opacity=".88"/>
+                  <path d="M130,107 C130,123 206,135 206,151" fill="none" stroke="#3a3e45" stroke-opacity=".9" stroke-width="3"/>
+                  <path d="M130,110 C130,126 206,138 206,154" fill="none" stroke="#cdd2da" stroke-opacity=".38" stroke-width="2.2"/>
+                  <path d="M126,90 Q138,99 126,108 Z" fill="#f2eee4"/>
+                  <path d="M210,134 Q198,143 210,152 Z" fill="#f2eee4"/>
+                  <rect x="130.5" y="114" width="2" height="18" fill="#c3c9d2" fill-opacity=".5"/>
+                  <rect x="203.5" y="158" width="2" height="18" fill="#c3c9d2" fill-opacity=".62"/>
+                  <path d="M130,136 C130,152 206,164 206,180 L206,202 C206,186 130,174 130,158 Z" fill="#0b0c0e" fill-opacity=".88"/>
+                  <path d="M130,155 C130,171 206,183 206,199" fill="none" stroke="#3a3e45" stroke-opacity=".9" stroke-width="3"/>
+                  <path d="M130,158 C130,174 206,186 206,202" fill="none" stroke="#cdd2da" stroke-opacity=".38" stroke-width="2.2"/>
+                  <path d="M126,138 Q138,147 126,156 Z" fill="#f2eee4"/>
+                  <path d="M210,182 Q198,191 210,200 Z" fill="#f2eee4"/>
+                  <rect x="130.5" y="162" width="2" height="18" fill="#c3c9d2" fill-opacity=".5"/>
+                  <rect x="203.5" y="206" width="2" height="18" fill="#c3c9d2" fill-opacity=".62"/>
+                  <path d="M130,184 C130,200 206,212 206,228 L206,250 C206,234 130,222 130,206 Z" fill="#0b0c0e" fill-opacity=".88"/>
+                  <path d="M130,203 C130,219 206,231 206,247" fill="none" stroke="#3a3e45" stroke-opacity=".9" stroke-width="3"/>
+                  <path d="M130,206 C130,222 206,234 206,250" fill="none" stroke="#cdd2da" stroke-opacity=".38" stroke-width="2.2"/>
+                  <path d="M126,186 Q138,195 126,204 Z" fill="#f2eee4"/>
+                  <path d="M210,230 Q198,239 210,248 Z" fill="#f2eee4"/>
+                  <rect x="130.5" y="210" width="2" height="18" fill="#c3c9d2" fill-opacity=".5"/>
+                  <rect x="203.5" y="254" width="2" height="18" fill="#c3c9d2" fill-opacity=".62"/>
+                  <path d="M130,232 C130,248 206,260 206,276 L206,298 C206,282 130,270 130,254 Z" fill="#0b0c0e" fill-opacity=".88"/>
+                  <path d="M130,251 C130,267 206,279 206,295" fill="none" stroke="#3a3e45" stroke-opacity=".9" stroke-width="3"/>
+                  <path d="M130,254 C130,270 206,282 206,298" fill="none" stroke="#cdd2da" stroke-opacity=".38" stroke-width="2.2"/>
+                  <path d="M126,234 Q138,243 126,252 Z" fill="#f2eee4"/>
+                  <path d="M210,278 Q198,287 210,296 Z" fill="#f2eee4"/>
+                  <rect x="130.5" y="258" width="2" height="18" fill="#c3c9d2" fill-opacity=".5"/>
+                  <rect x="203.5" y="302" width="2" height="18" fill="#c3c9d2" fill-opacity=".62"/>
+                  <path d="M130,280 C130,296 206,308 206,324 L206,346 C206,330 130,318 130,302 Z" fill="#0b0c0e" fill-opacity=".88"/>
+                  <path d="M130,299 C130,315 206,327 206,343" fill="none" stroke="#3a3e45" stroke-opacity=".9" stroke-width="3"/>
+                  <path d="M130,302 C130,318 206,330 206,346" fill="none" stroke="#cdd2da" stroke-opacity=".38" stroke-width="2.2"/>
+                  <path d="M126,282 Q138,291 126,300 Z" fill="#f2eee4"/>
+                  <path d="M210,326 Q198,335 210,344 Z" fill="#f2eee4"/>
+                  <rect x="130.5" y="306" width="2" height="18" fill="#c3c9d2" fill-opacity=".5"/>
+                  <rect x="203.5" y="350" width="2" height="18" fill="#c3c9d2" fill-opacity=".62"/>
+                  <path d="M130,328 C130,344 206,356 206,372 L206,394 C206,378 130,366 130,350 Z" fill="#0b0c0e" fill-opacity=".88"/>
+                  <path d="M130,347 C130,363 206,375 206,391" fill="none" stroke="#3a3e45" stroke-opacity=".9" stroke-width="3"/>
+                  <path d="M130,350 C130,366 206,378 206,394" fill="none" stroke="#cdd2da" stroke-opacity=".38" stroke-width="2.2"/>
+                  <path d="M126,330 Q138,339 126,348 Z" fill="#f2eee4"/>
+                  <path d="M210,374 Q198,383 210,392 Z" fill="#f2eee4"/>
+                  <rect x="130.5" y="354" width="2" height="18" fill="#c3c9d2" fill-opacity=".5"/>
+                  <rect x="203.5" y="398" width="2" height="18" fill="#c3c9d2" fill-opacity=".62"/>
+                  <path d="M130,376 C130,392 206,404 206,420 L206,442 C206,426 130,414 130,398 Z" fill="#0b0c0e" fill-opacity=".88"/>
+                  <path d="M130,395 C130,411 206,423 206,439" fill="none" stroke="#3a3e45" stroke-opacity=".9" stroke-width="3"/>
+                  <path d="M130,398 C130,414 206,426 206,442" fill="none" stroke="#cdd2da" stroke-opacity=".38" stroke-width="2.2"/>
+                  <path d="M126,378 Q138,387 126,396 Z" fill="#f2eee4"/>
+                  <path d="M210,422 Q198,431 210,440 Z" fill="#f2eee4"/>
+                  <rect x="130.5" y="402" width="2" height="18" fill="#c3c9d2" fill-opacity=".5"/>
+                  <rect x="203.5" y="446" width="2" height="18" fill="#c3c9d2" fill-opacity=".62"/>
+                  <path d="M130,424 C130,440 206,452 206,468 L206,490 C206,474 130,462 130,446 Z" fill="#0b0c0e" fill-opacity=".88"/>
+                  <path d="M130,443 C130,459 206,471 206,487" fill="none" stroke="#3a3e45" stroke-opacity=".9" stroke-width="3"/>
+                  <path d="M130,446 C130,462 206,474 206,490" fill="none" stroke="#cdd2da" stroke-opacity=".38" stroke-width="2.2"/>
+                  <path d="M126,426 Q138,435 126,444 Z" fill="#f2eee4"/>
+                  <path d="M210,470 Q198,479 210,488 Z" fill="#f2eee4"/>
+                  <rect x="130.5" y="450" width="2" height="18" fill="#c3c9d2" fill-opacity=".5"/>
+                  <rect x="203.5" y="494" width="2" height="18" fill="#c3c9d2" fill-opacity=".62"/>
+                  <path d="M130,472 C130,488 206,500 206,516 L206,538 C206,522 130,510 130,494 Z" fill="#0b0c0e" fill-opacity=".88"/>
+                  <path d="M130,491 C130,507 206,519 206,535" fill="none" stroke="#3a3e45" stroke-opacity=".9" stroke-width="3"/>
+                  <path d="M130,494 C130,510 206,522 206,538" fill="none" stroke="#cdd2da" stroke-opacity=".38" stroke-width="2.2"/>
+                  <path d="M126,474 Q138,483 126,492 Z" fill="#f2eee4"/>
+                  <path d="M210,518 Q198,527 210,536 Z" fill="#f2eee4"/>
+                  <rect x="130.5" y="498" width="2" height="18" fill="#c3c9d2" fill-opacity=".5"/>
+                  <rect x="203.5" y="542" width="2" height="18" fill="#c3c9d2" fill-opacity=".62"/>
                 </g></g>
                 <rect x="130" y="408.5" width="76" height="1.5" fill="#e6eaf0" fill-opacity=".5"/>
                 <polygon points="130,410 206,410 168,433" fill="url(#gPoint)"/>
-                <polygon points="206,410 168,433 168,410" fill="#000" fill-opacity=".22"/>
-                <path d="M132,410 C144,416 158,424 168,433 C160,422 150,413 140,408 Z" fill="#14161a" fill-opacity=".8"/>
-                <line x1="130" y1="410" x2="168" y2="433" stroke="#d8dce2" stroke-opacity=".35" stroke-width="1"/>
-                <line x1="206" y1="410" x2="168" y2="433" stroke="#90959c" stroke-opacity=".3" stroke-width="1"/>
-                <line x1="162" y1="430" x2="174" y2="427" stroke="#eef1f5" stroke-opacity=".8" stroke-width="1.3"/>
+                <polygon points="206,410 168,433 168,410" fill="#000" fill-opacity=".24"/>
+                <path d="M132,410 C144,416 158,424 168,433 C160,422 150,413 140,408 Z" fill="#14161a" fill-opacity=".85"/>
+                <path d="M204,410 C194,414 184,420 176,427 C184,417 192,411 200,407 Z" fill="#14161a" fill-opacity=".5"/>
+                <line x1="168" y1="433" x2="190" y2="411" stroke="#e8ecf1" stroke-opacity=".35" stroke-width="1"/>
+                <line x1="130" y1="410" x2="168" y2="433" stroke="#e6eaf0" stroke-opacity=".55" stroke-width="1.4"/>
+                <line x1="206" y1="410" x2="168" y2="433" stroke="#83888f" stroke-opacity=".4" stroke-width="1"/>
+                <line x1="161" y1="431" x2="175" y2="428" stroke="#f4f7fa" stroke-opacity=".9" stroke-width="1.5"/>
                 <rect x="130" y="405" width="1.5" height="5" fill="#dfe3e9" fill-opacity=".5"/>
                 <rect x="204.5" y="405" width="1.5" height="5" fill="#dfe3e9" fill-opacity=".5"/>
                 <rect x="130" y="6" width="76" height="404" fill="url(#gShade)"/>
                 <polygon points="130,410 206,410 168,433" fill="url(#gShade)" opacity=".7"/>
-                <g id="etch"><text transform="translate(163,16) rotate(90)">R&amp;S &#183; HSS &#183; &#216;9.5</text></g>
               </g>
+              <g id="etch"><text transform="translate(163,16) rotate(90)">R&amp;S &#183; HSS &#183; &#216;9.5</text></g>
             </g>
             <!-- the bench : the page's own rule, seen edge-on -->
             <rect x="8" y="504" width="320" height="2" fill="#1a170f"/>
@@ -770,6 +819,8 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
         <span class="row ind">that make</span>
         <span class="row big">the parts<span class="etch">.</span></span>
       </h1>
+      <p class="hero-sub rv">Diamond burrs, milling heads and twist drills &mdash; ground by hand in Kingston, NY, since 2011.</p>
+      <a class="obj-link hero-cta rv" href="#tools">See the tools <span class="go">&rarr;</span></a>
     </div>
     <div class="hero-return">
       <span class="lk">Twist drill · HSS · point [118&deg;]</span>
@@ -812,7 +863,7 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
   </section>
 
   <!-- ST 02 : the bench -->
-  <section class="station objects" data-station="ST·02 THE BENCH">
+  <section class="station objects" id="tools" data-station="ST·02 THE BENCH">
     <p class="claim rv bench-claim">The tools<span class="etch">.</span></p>
     <div class="bench" data-bench>
       <button class="b-plate" data-open-panel="burrs">
@@ -1346,29 +1397,61 @@ footer{margin-top:140px;border-top:0;padding-left:0;position:relative;overflow:h
     window.addEventListener('load',sizeCallouts);
     window.addEventListener('resize',sizeCallouts);
     setTimeout(sizeCallouts,700);
+    /* the film : 36 rendered frames of one half-turn (two-flute symmetry
+       makes the loop seamless). until enough frames arrive the drawn SVG
+       drill holds the pose, then the render takes over. */
+    var NF=36,SCALE=2,film=[],filmLoaded=0,filmReady=false;
+    var cv=stage.querySelector('.drill-film');
+    var cx=cv?cv.getContext('2d'):null;
+    function drawFilm(idx,ty){
+      cx.clearRect(0,0,672,1200);
+      cx.save();cx.beginPath();cx.rect(0,0,672,1010);cx.clip();  /* the bench cuts the film at svg y 505 */
+      cx.drawImage(film[idx],0,ty*SCALE,672,1200);
+      cx.restore();
+    }
+    for(var i=0;i<NF;i++)(function(i){
+      var im=new Image();
+      im.src='assets/drill-seq/f'+(i<10?'0':'')+i+'.webp';
+      im.onload=function(){
+        film[i]=im;filmLoaded++;
+        if(!filmReady&&filmLoaded>=NF){
+          filmReady=true;
+          if(drill)drill.style.opacity='0';
+          if(reduced&&cx){drawFilm(0,60);}
+        }
+      };
+    })(i);
     if(reduced){
       if(callA)callA.classList.add('on');
       if(callB)callB.classList.add('on');
       if(drill)drill.setAttribute('transform','translate(0,60)');
-      if(etch)etch.setAttribute('opacity','0');
+      if(etch)etch.setAttribute('transform','translate(0,60)');
       return;
     }
     var pos=0,target=0;
     var TRAVEL=400;                       /* svg units of descent, tip 433 -> through the 505 bench */
     var PERIOD=48;                        /* one flute groove per 48 units */
+    var HALFTURNS=10;                     /* five full rotations tip to seat */
     function frame(){
       var r=wrap.getBoundingClientRect();
       var total=r.height-window.innerHeight;
       target=total>0?Math.min(1,Math.max(0,-r.top/total)):0;
       pos+=(target-pos)*0.085;            /* the air cushion */
       var ty=pos*TRAVEL;
-      drill.setAttribute('transform','translate(0,'+ty.toFixed(2)+')');
       /* the bite : barely turning while the callouts letter, winding up as
-         it drills down - the helix phase IS the rotation, position-locked
-         so releasing mid-plunge lets the air win */
-      var phase=Math.pow(pos,1.7)*PERIOD*10;
-      helix.setAttribute('transform','translate(0,'+(-(phase%PERIOD)).toFixed(2)+')');
-      /* readable at rest, a blur at speed : the etch fades as the spindle winds up */
+         it drills down - rotation is position-locked to the plunge, so
+         releasing mid-push lets the air win */
+      var spin=Math.pow(pos,1.7)*HALFTURNS;
+      if(filmReady&&cx){
+        drawFilm(((Math.round(spin*NF)%NF)+NF)%NF,ty);
+      }else{
+        drill.setAttribute('transform','translate(0,'+ty.toFixed(2)+')');
+        var phase=spin*PERIOD;
+        helix.setAttribute('transform','translate(0,'+(-(phase%PERIOD)).toFixed(2)+')');
+      }
+      /* readable at rest, a blur at speed : the etch rides the shank and
+         fades as the spindle winds up */
+      etch.setAttribute('transform','translate(0,'+ty.toFixed(2)+')');
       etch.setAttribute('opacity',Math.max(0,1-pos*6).toFixed(2));
       /* the bore opens the moment the tip crosses the bench rule */
       var bw=84*Math.min(1,Math.max(0,(433+ty-500)/12));
