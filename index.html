@@ -34,7 +34,8 @@
 *{margin:0;padding:0;box-sizing:border-box;border-radius:0 !important}
 /* the one round thing: the dot on a dial indicator is round */
 .pr-dot,.rl-name .dot,.toy-dot{border-radius:50% !important}
-html{background:var(--paper)}
+html{background:var(--paper);scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 html.fonts-pending body{visibility:hidden}
 html,body{overflow-x:clip}
 
@@ -225,7 +226,9 @@ main{padding-left:0}
 .hero-return .lk{font-family:var(--mono);font-size:13px;font-weight:700;display:block;padding-bottom:6px}
 .hero-return .rule{display:block;height:2px;background:#000}
 .hero-return .lv{font-family:var(--mono);font-size:15px;display:block;padding-top:7px}
-.hero-object{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;z-index:1}
+/* the drill layer is scenery : it must never eat a click meant for the
+   state column beneath it (the SEE THE TOOLS chip lives down there) */
+.hero-object{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;z-index:1;pointer-events:none}
 .holder{width:auto;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
 .tool-stage{height:96vh;margin-bottom:-5vh;position:relative}
 .tool-stage svg{height:100%;width:auto;aspect-ratio:336/600;display:block;position:relative;z-index:1}
